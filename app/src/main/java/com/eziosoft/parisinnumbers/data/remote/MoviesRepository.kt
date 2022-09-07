@@ -1,11 +1,9 @@
 package com.eziosoft.parisinnumbers.data.remote
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import com.eziosoft.parisinnumbers.data.remote.models.Record
+import kotlinx.coroutines.flow.Flow
 
-class MoviesRepository(private val api: MoviesAPI) {
-    fun getMovies() = Pager(
-        pagingSourceFactory = { MoviesPagingSource(api, Datasets.MOVIES) },
-        config = PagingConfig(pageSize = PAGE_SIZE)
-    ).flow
+interface MoviesRepository {
+    fun getMovies(): Flow<PagingData<Record>>
 }

@@ -70,4 +70,14 @@ dependencies {
     implementation "androidx.paging:paging-compose:1.0.0-alpha16"
 
 
+
+    def koin_version= "3.2.0"
+    // Koin for Android
+    implementation "io.insert-koin:koin-android:$koin_version"
+    implementation "io.insert-koin:koin-androidx-compose:$koin_version"
+
+    // Koin Test
+    testImplementation "io.insert-koin:koin-test:$koin_version"
+    testImplementation "io.insert-koin:koin-test-junit4:$koin_version"
+
 }
