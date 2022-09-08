@@ -1,4 +1,4 @@
-package com.eziosoft.parisinnumbers.ui.theme
+package com.eziosoft.parisinnumbers.presentation.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

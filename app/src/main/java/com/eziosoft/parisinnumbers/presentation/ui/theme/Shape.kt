@@ -1,4 +1,4 @@
-package com.eziosoft.parisinnumbers.ui.theme
+package com.eziosoft.parisinnumbers.presentation.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

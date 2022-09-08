@@ -1,4 +1,4 @@
-package com.eziosoft
+package com.eziosoft.parisinnumbers.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,7 +8,7 @@ import com.eziosoft.parisinnumbers.data.remote.MoviesRepository
 import com.eziosoft.parisinnumbers.data.remote.models.Record
 import kotlinx.coroutines.flow.Flow
 
-class MainViewModel(private val repository: MoviesRepository) : ViewModel() {
+class ListScreenViewModel(private val repository: MoviesRepository) : ViewModel() {
 
     fun getMovies(): Flow<PagingData<Record>> = repository.getMovies().cachedIn(viewModelScope)
 }
