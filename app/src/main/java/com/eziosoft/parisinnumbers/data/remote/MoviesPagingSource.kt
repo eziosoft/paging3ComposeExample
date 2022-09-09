@@ -2,7 +2,7 @@ package com.eziosoft.parisinnumbers.data.remote
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.eziosoft.parisinnumbers.data.remote.models.Record
+import com.eziosoft.parisinnumbers.data.remote.models.records.Record
 import java.net.URL
 import java.net.URLDecoder
 
@@ -18,7 +18,7 @@ class MoviesPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Record> {
         return try {
             val nextPageNumber = params.key ?: 0
-            val response = api.getMovies(
+            val response = api.getMoviesPaged(
                 dataset = dataset.title,
                 pageStartItem = nextPageNumber,
                 pageSize = PAGE_SIZE,

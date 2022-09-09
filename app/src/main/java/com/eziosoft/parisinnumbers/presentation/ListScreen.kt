@@ -1,6 +1,9 @@
 package com.eziosoft.parisinnumbers.presentation
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -10,17 +13,29 @@ import androidx.paging.compose.items
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun ListScreen() {
+fun ListScreen(onItemClick: (movieTitle: String) -> Unit) {
     val viewModel = getViewModel<ListScreenViewModel>()
 
     val movies = viewModel.getMovies().collectAsLazyPagingItems()
-
-    LazyColumn(
-        modifier = Modifier.fillMaxSize()
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
     ) {
-        items(movies) { item ->
-            item?.record?.fields?.nom_tournage?.let {
-                Text(text = it)
+        LazyColumn(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            items(movies) { item ->
+                item?.record?.let { record ->
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                onItemClick(record.id)
+                            }
+                    ) {
+                        Text(text = record.fields.nom_tournage)
+                    }
+                }
             }
         }
     }

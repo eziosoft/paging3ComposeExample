@@ -1,4 +1,4 @@
-package com.eziosoft.parisinnumbers.data.remote.models
+package com.eziosoft.parisinnumbers.data.remote.models.singleRecord
 
 data class Fields(
     val adresse_lieu: String,

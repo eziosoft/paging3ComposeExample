@@ -1,4 +1,4 @@
-package com.eziosoft.parisinnumbers.data.remote.models
+package com.eziosoft.parisinnumbers.data.remote.models.records
 
 data class GeoShape(
     val geometry: Geometry,
