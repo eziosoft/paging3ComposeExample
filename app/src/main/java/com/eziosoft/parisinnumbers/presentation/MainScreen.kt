@@ -53,7 +53,7 @@ fun NavGraphBuilder.composableWithArguments(
     arguments: List<NamedNavArgument>,
     content: @Composable (NavBackStackEntry) -> Unit
 ) {
-    val listOfArguments = arguments.map { it.name }.joinToString("/", "{", "}")
+    val listOfArguments = arguments.joinToString("/", "{", "}") { it.name }
     val routeWithArgs = "$route/$listOfArguments"
 
     composable(route = routeWithArgs, arguments = arguments, content = content)

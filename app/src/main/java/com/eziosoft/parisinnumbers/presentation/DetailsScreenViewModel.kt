@@ -33,7 +33,9 @@ data class ScreenState(
     val endDate: String = "",
     val producer: String = "",
     val realisation: String = "",
-    val type: String = ""
+    val type: String = "",
+    val lat: Double = 0.0,
+    val lon: Double = 0.0
 )
 
 fun SingleRecord.toScreenState() =
@@ -46,7 +48,9 @@ fun SingleRecord.toScreenState() =
             endDate = date_fin,
             producer = nom_producteur,
             realisation = nom_realisateur,
-            type = type_tournage
+            type = type_tournage,
+            lat = geo_point_2d.lat,
+            lon = geo_point_2d.lon
         )
     }
 

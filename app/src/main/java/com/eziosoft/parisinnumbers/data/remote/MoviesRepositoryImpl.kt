@@ -18,6 +18,6 @@ class MoviesRepositoryImpl(private val api: MoviesAPI) : MoviesRepository {
     override suspend fun getMovie(id: String): Result<SingleRecord?> =
         api.getMovieById(datasets = Datasets.MOVIES.title, recordId = id).toResult()
 
-    override suspend fun getAllMovies(id: String): Result<AllMovies?> =
+    override suspend fun getAllMovies(): Result<AllMovies?> =
         api.getAllMovies(datasets = Datasets.MOVIES.title).toResult()
 }

@@ -9,8 +9,10 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.*
 import com.eziosoft.parisinnumbers.presentation.ui.theme.ParisInNumbersTheme
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
