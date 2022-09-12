@@ -1,29 +1,17 @@
-package com.eziosoft.parisinnumbers.presentation
+package com.eziosoft.parisinnumbers.presentation.ui.detailsScreen
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eziosoft.parisinnumbers.data.remote.MoviesRepository
 import com.eziosoft.parisinnumbers.data.remote.models.singleRecord.SingleRecord
+import com.eziosoft.parisinnumbers.presentation.navigation.Action
+import com.eziosoft.parisinnumbers.presentation.navigation.ActionDispatcher
+import com.eziosoft.parisinnumbers.presentation.navigation.Destination
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-
-// val adresse_lieu: String,
-// val annee_tournage: String,
-// val ardt_lieu: String,
-// val coord_x: Double,
-// val coord_y: Double,
-// val date_debut: String,
-// val date_fin: String,
-// val geo_point_2d: GeoPoint2d,
-// val geo_shape: GeoShape,
-// val id_lieu: String,
-// val nom_producteur: String,
-// val nom_realisateur: String,
-// val nom_tournage: String,
-// val type_tournage: String
 
 data class ScreenState(
     val movieTitle: String = "",
@@ -56,14 +44,14 @@ fun SingleRecord.toScreenState() =
 
 class DetailsScreenViewModel(
     movieId: String,
-    private val repository: MoviesRepository
+    private val repository: MoviesRepository,
+    val actionDispatcher: ActionDispatcher
 ) : ViewModel() {
     private val _contentFlow = MutableStateFlow(ScreenState())
     val screenStateFlow = _contentFlow.asStateFlow()
 
     init {
         getMovie(movieId)
-        Log.d("nnnn", "view model init: ")
     }
 
     private fun getMovie(id: String) = viewModelScope.launch(Dispatchers.IO) {
@@ -78,8 +66,15 @@ class DetailsScreenViewModel(
             }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        Log.d("nnnn", "onCleared: ")
+    fun navigateToList() {
+        viewModelScope.launch {
+            actionDispatcher.dispatchAction(Action.Navigate(Destination.LIST_SCREEN))
+        }
+    }
+
+    fun showBottomSheet(visible: Boolean) {
+        viewModelScope.launch {
+            actionDispatcher.dispatchAction(Action.ToggleBottomSheet(visible))
+        }
     }
 }

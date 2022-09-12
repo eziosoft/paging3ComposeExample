@@ -15,7 +15,7 @@ import java.io.File
 val dataModule = module {
     single<MoviesAPI> {
         val interceptor = HttpLoggingInterceptor()
-        interceptor.level = HttpLoggingInterceptor.Level.BODY
+        interceptor.level = HttpLoggingInterceptor.Level.NONE
 
         val okHttpClient = OkHttpClient.Builder().cache(
             Cache(

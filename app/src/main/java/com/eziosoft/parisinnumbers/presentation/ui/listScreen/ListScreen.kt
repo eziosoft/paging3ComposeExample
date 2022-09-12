@@ -1,4 +1,4 @@
-package com.eziosoft.parisinnumbers.presentation
+package com.eziosoft.parisinnumbers.presentation.ui.listScreen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -12,21 +12,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import com.eziosoft.parisinnumbers.presentation.navigation.Action
+import com.eziosoft.parisinnumbers.presentation.navigation.Destination
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun ListScreen(onItemClick: (movieTitle: String) -> Unit) {
+fun ListScreen() {
     val viewModel = getViewModel<ListScreenViewModel>()
     val movies = viewModel.getMovies().collectAsLazyPagingItems()
     val listState: LazyListState = rememberLazyListState()
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize()
     ) {
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            state = listState
+            modifier = Modifier.fillMaxSize(), state = listState
         ) {
             items(movies) { item ->
                 item?.record?.let { record ->
@@ -34,7 +34,10 @@ fun ListScreen(onItemClick: (movieTitle: String) -> Unit) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-                                onItemClick(record.id)
+                                viewModel.dispatchAction(
+                                    Action.Navigate(Destination.DETAILS_SCREEN),
+                                    recordId = record.id
+                                )
                             }
                     ) {
                         Text(text = record.fields.nom_tournage)

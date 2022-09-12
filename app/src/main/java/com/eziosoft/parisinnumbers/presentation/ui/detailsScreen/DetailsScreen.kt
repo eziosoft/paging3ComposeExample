@@ -1,4 +1,4 @@
-package com.eziosoft.parisinnumbers.presentation
+package com.eziosoft.parisinnumbers.presentation.ui.detailsScreen
 
 import android.content.Context
 import android.content.Intent
@@ -6,12 +6,17 @@ import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Button
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat.startActivity
 import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
@@ -22,15 +27,22 @@ fun DetailsScreen(movieId: String?) {
     val screenState = viewModel.screenStateFlow.collectAsState()
     val context = LocalContext.current
 
-    Content(screenState.value, context)
+    Content(screenState.value, context, viewModel)
 }
 
 @Composable
 private fun Content(
     screenState: ScreenState,
-    context: Context?
+    context: Context?,
+    viewModel: DetailsScreenViewModel
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
+        IconButton(onClick = {
+            viewModel.showBottomSheet(false)
+            viewModel.navigateToList()
+        }) {
+            Icon(imageVector = Icons.Default.Home, contentDescription = "Back")
+        }
         Text("Title: " + screenState.movieTitle)
         Text("Address: " + screenState.address)
         Text("Year: " + screenState.year)
@@ -49,13 +61,15 @@ private fun Content(
         }) {
             Text(text = "Open in Google Maps")
         }
-    }
-}
 
-@Preview(showBackground = true)
-@Composable
-private fun Preview() {
-    Content(screenState = ScreenState(), context = null)
+        IconButton(onClick = { viewModel.showBottomSheet(true) }) {
+            Icon(imageVector = Icons.Default.KeyboardArrowUp, contentDescription = "Up")
+        }
+
+        IconButton(onClick = { viewModel.showBottomSheet(false) }) {
+            Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = "Down")
+        }
+    }
 }
 
 private fun openInGoogleMaps(context: Context, lat: Double, lon: Double) {
