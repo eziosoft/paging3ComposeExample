@@ -1,6 +1,7 @@
 package com.eziosoft.parisinnumbers
 
 import com.eziosoft.parisinnumbers.presentation.navigation.ActionDispatcher
+import com.eziosoft.parisinnumbers.presentation.navigation.SharedParameters
 import com.eziosoft.parisinnumbers.presentation.ui.detailsScreen.DetailsScreenViewModel
 import com.eziosoft.parisinnumbers.presentation.ui.listScreen.ListScreenViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -15,5 +16,6 @@ val presentationModule = module {
         DetailsScreenViewModel(movieId = movieId, repository = get(), actionDispatcher = get())
     }
 
-    single { ActionDispatcher() }
+    single { SharedParameters() }
+    single { ActionDispatcher(get()) }
 }

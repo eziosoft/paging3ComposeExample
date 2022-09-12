@@ -1,6 +1,7 @@
 package com.eziosoft.parisinnumbers.presentation.ui.detailsScreen
 
 import android.util.Log
+import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eziosoft.parisinnumbers.data.remote.MoviesRepository
@@ -72,9 +73,22 @@ class DetailsScreenViewModel(
         }
     }
 
-    fun showBottomSheet(visible: Boolean) {
+    fun showBottomSheet(content: @Composable () -> Unit) {
         viewModelScope.launch {
-            actionDispatcher.dispatchAction(Action.ToggleBottomSheet(visible))
+//            actionDispatcher.sharedParameters.bottomSheetContent = { content() }
+            actionDispatcher.dispatchAction(Action.ToggleBottomSheet(true))
+        }
+    }
+
+    fun hideBottomSheet() {
+        viewModelScope.launch {
+            actionDispatcher.dispatchAction(Action.ToggleBottomSheet(false))
+        }
+    }
+
+    fun showSnackbar(text: String) {
+        viewModelScope.launch {
+            actionDispatcher.dispatchAction(Action.ShowSnackbar(text))
         }
     }
 }

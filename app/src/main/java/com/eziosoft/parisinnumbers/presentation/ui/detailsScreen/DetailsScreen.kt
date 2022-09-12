@@ -3,6 +3,7 @@ package com.eziosoft.parisinnumbers.presentation.ui.detailsScreen
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Button
@@ -11,6 +12,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.Composable
@@ -38,19 +40,12 @@ private fun Content(
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         IconButton(onClick = {
-            viewModel.showBottomSheet(false)
+            viewModel.hideBottomSheet()
             viewModel.navigateToList()
         }) {
             Icon(imageVector = Icons.Default.Home, contentDescription = "Back")
         }
-        Text("Title: " + screenState.movieTitle)
-        Text("Address: " + screenState.address)
-        Text("Year: " + screenState.year)
-        Text("Start date: " + screenState.startDate)
-        Text("EndDate: " + screenState.endDate)
-        Text("Producer: " + screenState.producer)
-        Text("Realisation: " + screenState.realisation)
-        Text("Type: " + screenState.type)
+        Content(screenState)
 
         Button(onClick = {
             openInGoogleMaps(
@@ -62,14 +57,38 @@ private fun Content(
             Text(text = "Open in Google Maps")
         }
 
-        IconButton(onClick = { viewModel.showBottomSheet(true) }) {
+        IconButton(onClick = {
+            viewModel.showBottomSheet() {
+                Box() {
+                    Content(screenState = screenState)
+                }
+            }
+        }) {
             Icon(imageVector = Icons.Default.KeyboardArrowUp, contentDescription = "Up")
         }
 
-        IconButton(onClick = { viewModel.showBottomSheet(false) }) {
+        IconButton(onClick = {
+            viewModel.hideBottomSheet()
+        }) {
             Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = "Down")
         }
+
+        IconButton(onClick = { viewModel.showSnackbar("The title is ${screenState.movieTitle}") }) {
+            Icon(imageVector = Icons.Default.Info, contentDescription = "Info")
+        }
     }
+}
+
+@Composable
+private fun Content(screenState: ScreenState) {
+    Text("Title: " + screenState.movieTitle)
+    Text("Address: " + screenState.address)
+    Text("Year: " + screenState.year)
+    Text("Start date: " + screenState.startDate)
+    Text("EndDate: " + screenState.endDate)
+    Text("Producer: " + screenState.producer)
+    Text("Realisation: " + screenState.realisation)
+    Text("Type: " + screenState.type)
 }
 
 private fun openInGoogleMaps(context: Context, lat: Double, lon: Double) {

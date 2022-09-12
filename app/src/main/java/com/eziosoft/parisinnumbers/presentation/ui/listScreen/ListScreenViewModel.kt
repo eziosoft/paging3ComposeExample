@@ -8,6 +8,7 @@ import com.eziosoft.parisinnumbers.data.remote.MoviesRepository
 import com.eziosoft.parisinnumbers.data.remote.models.records.Record
 import com.eziosoft.parisinnumbers.presentation.navigation.Action
 import com.eziosoft.parisinnumbers.presentation.navigation.ActionDispatcher
+import com.eziosoft.parisinnumbers.presentation.navigation.Destination
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
@@ -17,10 +18,10 @@ class ListScreenViewModel(
 ) : ViewModel() {
     fun getMovies(): Flow<PagingData<Record>> = repository.getMovies().cachedIn(viewModelScope)
 
-    fun dispatchAction(action: Action, recordId: String) {
+    fun navigateToDetails(recordId: String) {
         viewModelScope.launch {
-            actionDispatcher.recordId = recordId
-            actionDispatcher.dispatchAction(action)
+            actionDispatcher.sharedParameters.recordId = recordId
+            actionDispatcher.dispatchAction(Action.Navigate(Destination.DETAILS_SCREEN))
         }
     }
 }

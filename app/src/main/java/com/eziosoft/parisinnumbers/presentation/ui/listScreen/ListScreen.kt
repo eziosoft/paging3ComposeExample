@@ -12,8 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import com.eziosoft.parisinnumbers.presentation.navigation.Action
-import com.eziosoft.parisinnumbers.presentation.navigation.Destination
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -34,10 +32,7 @@ fun ListScreen() {
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-                                viewModel.dispatchAction(
-                                    Action.Navigate(Destination.DETAILS_SCREEN),
-                                    recordId = record.id
-                                )
+                                viewModel.navigateToDetails(recordId = record.id)
                             }
                     ) {
                         Text(text = record.fields.nom_tournage)

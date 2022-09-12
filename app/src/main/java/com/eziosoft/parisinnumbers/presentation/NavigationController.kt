@@ -11,18 +11,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.eziosoft.parisinnumbers.presentation.navigation.Action
 import com.eziosoft.parisinnumbers.presentation.navigation.ActionDispatcher
 import com.eziosoft.parisinnumbers.presentation.navigation.Destination
-import com.eziosoft.parisinnumbers.presentation.ui.detailsScreen.DetailsScreen
-import com.eziosoft.parisinnumbers.presentation.ui.listScreen.ListScreen
+import com.eziosoft.parisinnumbers.presentation.ui.detailsScreen.detailsScreen
+import com.eziosoft.parisinnumbers.presentation.ui.listScreen.listScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -52,25 +48,32 @@ fun NavigationController(
     }
 
     BottomSheetScaffold(
-        modifier = Modifier.padding(horizontal = 4.dp),
         scaffoldState = bottomSheetScaffoldState,
         sheetContent = {
-            Box(
-                modifier = Modifier.background(Color.LightGray)
-            ) {
-                Text("Sheet Content", fontSize = 80.sp)
-            }
+            BottomSheetContent()
+//            actionDispatcher.sharedParameters.bottomSheetContent?.let { it() }
         },
         sheetPeekHeight = 0.dp
     ) { scaffoldPaddings ->
         NavHost(
-            modifier = Modifier.padding(scaffoldPaddings),
+            modifier = Modifier
+                .padding(scaffoldPaddings)
+                .padding(horizontal = 4.dp),
             navController = navController,
             startDestination = startDestination
         ) {
             listScreen()
             detailsScreen()
         }
+    }
+}
+
+@Composable
+private fun BottomSheetContent() {
+    Box(
+        modifier = Modifier.background(Color.LightGray)
+    ) {
+        Text("Sheet Content", fontSize = 80.sp)
     }
 }
 
@@ -90,7 +93,7 @@ private fun processAction(
                     inclusive = false
                 )
                 Destination.DETAILS_SCREEN -> navController.navigate(
-                    Destination.DETAILS_SCREEN.name + "/${actionDispatcher.recordId}"
+                    Destination.DETAILS_SCREEN.name + "/${actionDispatcher.sharedParameters.recordId}"
                 )
             }
         is Action.ToggleBottomSheet -> {
@@ -102,22 +105,10 @@ private fun processAction(
                 }
             }
         }
-    }
-}
 
-private fun NavGraphBuilder.listScreen() {
-    composable(
-        route = Destination.LIST_SCREEN.name
-    ) {
-        ListScreen()
-    }
-}
-
-private fun NavGraphBuilder.detailsScreen() {
-    composableWithArguments(
-        Destination.DETAILS_SCREEN.name,
-        listOf(navArgument("recordId") { type = NavType.StringType })
-    ) {
-        DetailsScreen(it.arguments?.getString("recordId"))
+        is Action.ShowSnackbar ->
+            coroutineScope.launch {
+                bottomSheetScaffoldState.snackbarHostState.showSnackbar(action.text)
+            }
     }
 }
