@@ -2,7 +2,7 @@ package com.eziosoft.parisinnumbers.presentation.ui.listScreen
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.eziosoft.parisinnumbers.presentation.navigation.Destination
+import com.eziosoft.parisinnumbers.navigation.Destination
 
 fun NavGraphBuilder.listScreen() {
     composable(

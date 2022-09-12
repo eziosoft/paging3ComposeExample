@@ -6,9 +6,9 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.eziosoft.parisinnumbers.data.remote.MoviesRepository
 import com.eziosoft.parisinnumbers.data.remote.models.records.Record
-import com.eziosoft.parisinnumbers.presentation.navigation.Action
-import com.eziosoft.parisinnumbers.presentation.navigation.ActionDispatcher
-import com.eziosoft.parisinnumbers.presentation.navigation.Destination
+import com.eziosoft.parisinnumbers.navigation.Action
+import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
+import com.eziosoft.parisinnumbers.navigation.Destination
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 

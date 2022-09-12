@@ -1,4 +1,4 @@
-package com.eziosoft.parisinnumbers.presentation.navigation
+package com.eziosoft.parisinnumbers.navigation
 
 enum class Destination {
     LIST_SCREEN, DETAILS_SCREEN

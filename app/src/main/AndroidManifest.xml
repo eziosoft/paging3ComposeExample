@@ -13,9 +13,8 @@
         android:theme="@style/Theme.ParisInNumbers"
         android:name="com.eziosoft.App">
         <activity
-            android:name=".presentation.MainActivity"
+            android:name=".presentation.ui.mainScreen.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.ParisInNumbers">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

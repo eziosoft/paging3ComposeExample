@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eziosoft.parisinnumbers.data.remote.MoviesRepository
 import com.eziosoft.parisinnumbers.data.remote.models.singleRecord.SingleRecord
-import com.eziosoft.parisinnumbers.presentation.navigation.Action
-import com.eziosoft.parisinnumbers.presentation.navigation.ActionDispatcher
-import com.eziosoft.parisinnumbers.presentation.navigation.Destination
+import com.eziosoft.parisinnumbers.navigation.Action
+import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
+import com.eziosoft.parisinnumbers.navigation.Destination
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

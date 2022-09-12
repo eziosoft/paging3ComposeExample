@@ -1,4 +1,4 @@
-package com.eziosoft.parisinnumbers.presentation.navigation
+package com.eziosoft.parisinnumbers.navigation
 
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow

@@ -1,4 +1,4 @@
-package com.eziosoft.parisinnumbers.presentation.navigation
+package com.eziosoft.parisinnumbers.navigation
 
 data class SharedParameters(
     var recordId: String = "",

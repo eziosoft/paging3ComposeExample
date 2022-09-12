@@ -3,8 +3,8 @@ package com.eziosoft.parisinnumbers.presentation.ui.detailsScreen
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import com.eziosoft.parisinnumbers.presentation.composableWithArguments
-import com.eziosoft.parisinnumbers.presentation.navigation.Destination
+import com.eziosoft.parisinnumbers.navigation.Destination
+import com.eziosoft.parisinnumbers.presentation.ui.mainScreen.composableWithArguments
 
 fun NavGraphBuilder.detailsScreen() {
     composableWithArguments(

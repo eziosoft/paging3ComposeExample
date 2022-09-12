@@ -1,4 +1,4 @@
-package com.eziosoft.parisinnumbers.presentation
+package com.eziosoft.parisinnumbers.presentation.ui.mainScreen
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NamedNavArgument

@@ -1,7 +1,7 @@
 package com.eziosoft.parisinnumbers
 
-import com.eziosoft.parisinnumbers.presentation.navigation.ActionDispatcher
-import com.eziosoft.parisinnumbers.presentation.navigation.SharedParameters
+import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
+import com.eziosoft.parisinnumbers.navigation.SharedParameters
 import com.eziosoft.parisinnumbers.presentation.ui.detailsScreen.DetailsScreenViewModel
 import com.eziosoft.parisinnumbers.presentation.ui.listScreen.ListScreenViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel

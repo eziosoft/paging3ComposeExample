@@ -1,4 +1,4 @@
-package com.eziosoft.parisinnumbers.presentation.navigation
+package com.eziosoft.parisinnumbers.navigation
 
 sealed class Action {
     data class Navigate(val destination: Destination) : Action()
