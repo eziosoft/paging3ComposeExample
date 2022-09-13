@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.eziosoft.parisinnumbers.data.remote.MoviesRepository
-import com.eziosoft.parisinnumbers.data.remote.models.records.Record
+import com.eziosoft.parisinnumbers.domain.Movie
 import com.eziosoft.parisinnumbers.navigation.Action
 import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
 import com.eziosoft.parisinnumbers.navigation.Destination
@@ -16,7 +16,7 @@ class ListScreenViewModel(
     private val repository: MoviesRepository,
     private val actionDispatcher: ActionDispatcher
 ) : ViewModel() {
-    fun getMovies(): Flow<PagingData<Record>> = repository.getMovies().cachedIn(viewModelScope)
+    fun getMovies(): Flow<PagingData<Movie>> = repository.getMovies().cachedIn(viewModelScope)
 
     fun navigateToDetails(recordId: String) {
         viewModelScope.launch {

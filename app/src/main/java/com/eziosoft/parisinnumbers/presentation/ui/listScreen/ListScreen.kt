@@ -13,7 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import com.eziosoft.parisinnumbers.data.remote.models.records.RecordX
+import com.eziosoft.parisinnumbers.domain.Movie
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -29,9 +29,7 @@ fun ListScreen() {
             modifier = Modifier.fillMaxSize(), state = listState
         ) {
             items(movies) { item ->
-                item?.record?.let { record ->
-                    ListItem(viewModel, record)
-                }
+                item?.let { ListItem(viewModel, it) }
             }
         }
     }
@@ -40,7 +38,7 @@ fun ListScreen() {
 @Composable
 private fun ListItem(
     viewModel: ListScreenViewModel,
-    record: RecordX
+    record: Movie
 ) {
     Card(
         modifier = Modifier
@@ -52,8 +50,8 @@ private fun ListItem(
         elevation = 5.dp
     ) {
         Column(modifier = Modifier.padding(8.dp)) {
-            Text(text = record.fields.nom_tournage, fontWeight = FontWeight.Bold)
-            Text(text = record.fields.annee_tournage)
+            Text(text = record.title, fontWeight = FontWeight.Bold)
+            Text(text = record.year)
         }
     }
 }

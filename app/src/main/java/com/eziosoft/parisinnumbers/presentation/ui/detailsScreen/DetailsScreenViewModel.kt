@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eziosoft.parisinnumbers.data.remote.MoviesRepository
-import com.eziosoft.parisinnumbers.data.remote.models.singleRecord.SingleRecord
+import com.eziosoft.parisinnumbers.domain.Movie
 import com.eziosoft.parisinnumbers.navigation.Action
 import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
 import com.eziosoft.parisinnumbers.navigation.Destination
@@ -27,21 +27,19 @@ data class ScreenState(
     val lon: Double = 0.0
 )
 
-fun SingleRecord.toScreenState() =
-    with(record.fields) {
-        ScreenState(
-            movieTitle = nom_tournage,
-            address = adresse_lieu,
-            year = annee_tournage,
-            startDate = date_debut,
-            endDate = date_fin,
-            producer = nom_producteur,
-            realisation = nom_realisateur,
-            type = type_tournage,
-            lat = geo_point_2d.lat,
-            lon = geo_point_2d.lon
-        )
-    }
+fun Movie.toScreenState() =
+    ScreenState(
+        movieTitle = title,
+        address = address,
+        year = year,
+        startDate = startDate,
+        endDate = endDate,
+        producer = producer,
+        realisation = realisation,
+        type = type,
+        lat = lat,
+        lon = lon
+    )
 
 class DetailsScreenViewModel(
     private val repository: MoviesRepository,
