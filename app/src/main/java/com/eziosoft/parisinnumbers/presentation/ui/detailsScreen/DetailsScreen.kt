@@ -24,8 +24,8 @@ import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
 
 @Composable
-fun DetailsScreen(movieId: String?) {
-    val viewModel = getViewModel<DetailsScreenViewModel> { parametersOf(movieId) }
+fun DetailsScreen() {
+    val viewModel = getViewModel<DetailsScreenViewModel>()
     val screenState = viewModel.screenStateFlow.collectAsState()
     val context = LocalContext.current
 

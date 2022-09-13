@@ -81,7 +81,7 @@ private fun processAction(
                     inclusive = false
                 )
                 Destination.DETAILS_SCREEN -> navController.navigate(
-                    Destination.DETAILS_SCREEN.name + "/${actionDispatcher.sharedParameters.recordId}"
+                    Destination.DETAILS_SCREEN.name
                 )
             }
         is Action.ToggleBottomSheet -> {

@@ -12,8 +12,8 @@ val presentationModule = module {
         ListScreenViewModel(repository = get(), get())
     }
 
-    viewModel { (movieId: String) ->
-        DetailsScreenViewModel(movieId = movieId, repository = get(), actionDispatcher = get())
+    viewModel {
+        DetailsScreenViewModel(repository = get(), actionDispatcher = get())
     }
 
     single { SharedParameters() }

@@ -44,7 +44,6 @@ fun SingleRecord.toScreenState() =
     }
 
 class DetailsScreenViewModel(
-    movieId: String,
     private val repository: MoviesRepository,
     val actionDispatcher: ActionDispatcher
 ) : ViewModel() {
@@ -52,7 +51,7 @@ class DetailsScreenViewModel(
     val screenStateFlow = _contentFlow.asStateFlow()
 
     init {
-        getMovie(movieId)
+        getMovie(actionDispatcher.sharedParameters.recordId)
     }
 
     private fun getMovie(id: String) = viewModelScope.launch(Dispatchers.IO) {
