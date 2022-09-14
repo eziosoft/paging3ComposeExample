@@ -72,7 +72,7 @@ class DetailsScreenViewModel(
 
     fun showBottomSheet(content: @Composable () -> Unit) {
         viewModelScope.launch {
-//            actionDispatcher.sharedParameters.bottomSheetContent = { content() }
+            actionDispatcher.sharedParameters.bottomSheetContent.value = content
             actionDispatcher.dispatchAction(Action.ToggleBottomSheet(true))
         }
     }

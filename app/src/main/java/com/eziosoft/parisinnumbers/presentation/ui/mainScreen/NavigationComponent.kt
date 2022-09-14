@@ -1,11 +1,14 @@
 package com.eziosoft.parisinnumbers.presentation.ui.mainScreen
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -15,6 +18,7 @@ import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
 import com.eziosoft.parisinnumbers.navigation.Destination
 import com.eziosoft.parisinnumbers.presentation.ui.detailsScreen.detailsScreen
 import com.eziosoft.parisinnumbers.presentation.ui.listScreen.listScreen
+import com.eziosoft.parisinnumbers.presentation.ui.theme.PrimaryLight
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -47,8 +51,15 @@ fun NavigationComponent(
         modifier = modifier,
         scaffoldState = bottomSheetScaffoldState,
         sheetContent = {
-            BottomSheetContent()
-//            actionDispatcher.sharedParameters.bottomSheetContent?.let { it() }
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp))
+                    .background(PrimaryLight)
+                    .padding(8.dp)
+            ) {
+                actionDispatcher.sharedParameters.bottomSheetContent.value()
+            }
         },
         sheetPeekHeight = 0.dp
     ) { scaffoldPaddings ->

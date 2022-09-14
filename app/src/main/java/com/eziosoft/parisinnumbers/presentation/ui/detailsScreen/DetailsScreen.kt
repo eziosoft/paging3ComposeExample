@@ -3,7 +3,6 @@ package com.eziosoft.parisinnumbers.presentation.ui.detailsScreen
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Button
@@ -58,9 +57,7 @@ private fun Content(
 
         IconButton(onClick = {
             viewModel.showBottomSheet() {
-                Box() {
-                    Content(screenState = screenState)
-                }
+                BottomSheetContent(screenState)
             }
         }) {
             Icon(imageVector = Icons.Default.KeyboardArrowUp, contentDescription = "Up")
@@ -79,15 +76,22 @@ private fun Content(
 }
 
 @Composable
+private fun BottomSheetContent(screenState: ScreenState) {
+    Content(screenState = screenState)
+}
+
+@Composable
 private fun Content(screenState: ScreenState) {
-    Text("Title: " + screenState.movieTitle)
-    Text("Address: " + screenState.address)
-    Text("Year: " + screenState.year)
-    Text("Start date: " + screenState.startDate)
-    Text("EndDate: " + screenState.endDate)
-    Text("Producer: " + screenState.producer)
-    Text("Realisation: " + screenState.realisation)
-    Text("Type: " + screenState.type)
+    Column() {
+        Text("Title: " + screenState.movieTitle)
+        Text("Address: " + screenState.address)
+        Text("Year: " + screenState.year)
+        Text("Start date: " + screenState.startDate)
+        Text("EndDate: " + screenState.endDate)
+        Text("Producer: " + screenState.producer)
+        Text("Realisation: " + screenState.realisation)
+        Text("Type: " + screenState.type)
+    }
 }
 
 private fun openInGoogleMaps(context: Context, lat: Double, lon: Double) {

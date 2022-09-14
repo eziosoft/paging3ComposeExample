@@ -13,7 +13,11 @@ class MoviesRepositoryImpl(private val api: MoviesAPI) : MoviesRepository {
     override fun getMovies(): Flow<PagingData<Movie>> = Pager(
         pagingSourceFactory = { MoviesPagingSource(api, Datasets.MOVIES) },
         config = PagingConfig(pageSize = PAGE_SIZE)
-    ).flow.map { it.map { it.record.toMovie() } }
+    ).flow.map { pagingData ->
+        pagingData.map { record ->
+            record.record.toMovie()
+        }
+    }
 
     override suspend fun getMovie(id: String): Result<Movie?> {
         val response = api.getMovieById(datasets = Datasets.MOVIES.title, recordId = id)
