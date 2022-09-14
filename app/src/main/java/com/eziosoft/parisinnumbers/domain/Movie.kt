@@ -30,8 +30,8 @@ fun RecordX.toMovie() = Movie(
     startDate = fields.date_debut,
     endDate = fields.date_fin,
     placeId = fields.id_lieu,
-    producer = fields.nom_producteur,
-    realisation = fields.nom_realisateur,
+    producer = fields.nom_producteur ?: "",
+    realisation = fields.nom_realisateur ?: "",
     title = fields.nom_tournage,
     type = fields.type_tournage
 )

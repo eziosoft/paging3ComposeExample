@@ -8,7 +8,8 @@ import java.net.URLDecoder
 
 class MoviesPagingSource(
     private val api: MoviesAPI,
-    private val dataset: Datasets
+    private val dataset: Datasets,
+    private val searchText: String
 ) : PagingSource<Int, Record>() {
 
     override fun getRefreshKey(state: PagingState<Int, Record>): Int? {
@@ -22,22 +23,22 @@ class MoviesPagingSource(
                 dataset = dataset.title,
                 pageStartItem = nextPageNumber,
                 pageSize = PAGE_SIZE,
-                where = null, // "nom_tournage like \"ALICE\"",
-                orderBy = null,
-                groupBy = null
+                where = if (searchText.isNotBlank()) "nom_tournage like \"$searchText\"" else null,
+                orderBy = "date_debut desc",
+                groupBy = null // "nom_tournage"
             )
 
             val currentPage =
-                splitQuery(URL(response.links.find { it.rel == "self" }?.href))?.get("offset")
+                splitQuery(URL(response.links.find { it.rel == "self" }?.href))["offset"]
                     ?.toInt() ?: 0
-            val firstPage =
-                splitQuery(URL(response.links.find { it.rel == "first" }?.href))?.get("offset")
-                    ?.toInt() ?: 0
+//            val firstPage =
+//                splitQuery(URL(response.links.find { it.rel == "first" }?.href))["offset"]
+//                    ?.toInt() ?: 0
             val lastPage =
-                splitQuery(URL(response.links.find { it.rel == "last" }?.href))?.get("offset")
+                splitQuery(URL(response.links.find { it.rel == "last" }?.href))["offset"]
                     ?.toInt() ?: 0
             val nextPage =
-                splitQuery(URL(response.links.find { it.rel == "next" }?.href))?.get("offset")
+                splitQuery(URL(response.links.find { it.rel == "next" }?.href))["offset"]
                     ?.toInt() ?: 0
 
             LoadResult.Page(
@@ -50,7 +51,7 @@ class MoviesPagingSource(
         }
     }
 
-    private fun splitQuery(url: URL): Map<String, String>? {
+    private fun splitQuery(url: URL): Map<String, String> {
         val queryPairs: MutableMap<String, String> = LinkedHashMap()
         val query = url.query
         val pairs = query.split("&").toTypedArray()

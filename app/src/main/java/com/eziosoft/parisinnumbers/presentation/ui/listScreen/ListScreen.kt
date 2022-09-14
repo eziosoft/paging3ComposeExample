@@ -5,11 +5,19 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.Card
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
@@ -25,11 +33,17 @@ fun ListScreen() {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(), state = listState
-        ) {
-            items(movies) { item ->
-                item?.let { ListItem(viewModel, it) }
+        Column {
+            Search(onSearch = {
+                viewModel.search(it)
+            })
+
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(), state = listState
+            ) {
+                items(movies) { item ->
+                    item?.let { ListItem(viewModel, it) }
+                }
             }
         }
     }
@@ -51,7 +65,50 @@ private fun ListItem(
     ) {
         Column(modifier = Modifier.padding(8.dp)) {
             Text(text = record.title, fontWeight = FontWeight.Bold)
-            Text(text = record.year)
+            Text(text = "${record.startDate} - ${record.endDate}")
+            Text(text = record.address)
+        }
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun Search(onSearch: (String) -> Unit) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    var text by rememberSaveable() {
+        mutableStateOf("")
+    }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+    ) {
+        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            OutlinedTextField(
+                modifier = Modifier.weight(0.9f),
+                value = text,
+                maxLines = 1,
+                singleLine = true,
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Filled.Search,
+                        contentDescription = "Search"
+                    )
+                },
+                label = { Text(text = "Search title") },
+                onValueChange = {
+                    text = it
+                    onSearch(text)
+                },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Default),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        onSearch(text)
+                        keyboardController?.hide()
+                    }
+                )
+            )
         }
     }
 }

@@ -11,8 +11,8 @@ data class Fields(
     val geo_point_2d: GeoPoint2d,
     val geo_shape: GeoShape,
     val id_lieu: String,
-    val nom_producteur: String,
-    val nom_realisateur: String,
+    val nom_producteur: String?,
+    val nom_realisateur: String?,
     val nom_tournage: String,
     val type_tournage: String
 )

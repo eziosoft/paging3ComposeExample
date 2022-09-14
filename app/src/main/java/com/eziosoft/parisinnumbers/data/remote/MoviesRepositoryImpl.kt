@@ -1,17 +1,20 @@
 package com.eziosoft.parisinnumbers.data.remote
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.map
+import androidx.paging.*
 import com.eziosoft.parisinnumbers.domain.Movie
 import com.eziosoft.parisinnumbers.domain.toMovie
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class MoviesRepositoryImpl(private val api: MoviesAPI) : MoviesRepository {
+    private var searchText = ""
+    private var pagingSource: MoviesPagingSource = MoviesPagingSource(api, Datasets.MOVIES, searchText)
+
     override fun getMovies(): Flow<PagingData<Movie>> = Pager(
-        pagingSourceFactory = { MoviesPagingSource(api, Datasets.MOVIES) },
+        pagingSourceFactory = {
+            pagingSource = MoviesPagingSource(api, Datasets.MOVIES, searchText)
+            pagingSource
+        },
         config = PagingConfig(pageSize = PAGE_SIZE)
     ).flow.map { pagingData ->
         pagingData.map { record ->
@@ -35,5 +38,10 @@ class MoviesRepositoryImpl(private val api: MoviesAPI) : MoviesRepository {
         } else {
             Result.failure(Exception(response.message()))
         }
+    }
+
+    override fun searchMovieByTitle(title: String) {
+        searchText = title
+        pagingSource.invalidate()
     }
 }
