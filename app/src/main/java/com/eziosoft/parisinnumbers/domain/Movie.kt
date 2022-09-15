@@ -22,25 +22,25 @@ data class Movie(
 
 fun RecordX.toMovie() = Movie(
     id = id,
-    address = fields.adresse_lieu,
-    year = fields.annee_tournage,
-    ardt_lieu = fields.ardt_lieu,
+    address = fields.adresse_lieu?: "",
+    year = fields.annee_tournage?: "",
+    ardt_lieu = fields.ardt_lieu ?: "",
     lon = fields.geo_point_2d.lon,
     lat = fields.geo_point_2d.lat,
-    startDate = fields.date_debut,
-    endDate = fields.date_fin,
-    placeId = fields.id_lieu,
+    startDate = fields.date_debut?: "",
+    endDate = fields.date_fin?: "",
+    placeId = fields.id_lieu?: "",
     producer = fields.nom_producteur ?: "",
     realisation = fields.nom_realisateur ?: "",
-    title = fields.nom_tournage,
-    type = fields.type_tournage
+    title = fields.nom_tournage?: "",
+    type = fields.type_tournage?: ""
 )
 
 fun SingleRecord.toMovie() = Movie(
     id = record.id,
     address = record.fields.adresse_lieu,
     year = record.fields.annee_tournage,
-    ardt_lieu = record.fields.ardt_lieu,
+    ardt_lieu = record.fields.ardt_lieu ?: "",
     lon = record.fields.geo_point_2d.lon,
     lat = record.fields.geo_point_2d.lat,
     startDate = record.fields.date_debut,
@@ -56,7 +56,7 @@ fun AllMoviesItem.toMovie() = Movie(
     id = "",
     address = adresse_lieu,
     year = annee_tournage,
-    ardt_lieu = ardt_lieu,
+    ardt_lieu = ardt_lieu ?: "",
     lon = geo_point_2d.lon,
     lat = geo_point_2d.lat,
     startDate = date_debut,
