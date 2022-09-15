@@ -1,6 +1,5 @@
 package com.eziosoft.parisinnumbers.presentation.ui.listScreen
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -36,9 +35,8 @@ class ListScreenViewModel(
     @OptIn(FlowPreview::class)
     private fun observeSearch() {
         viewModelScope.launch {
-            searchFlow.debounce(1000).collect {
+            searchFlow.debounce(1500).collect {
                 repository.searchMovieByTitle(it)
-                Log.d("aaaa", "ObserveSearch: ")
             }
         }
     }

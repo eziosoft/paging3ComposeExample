@@ -1,6 +1,5 @@
 package com.eziosoft.parisinnumbers.data.remote
 
-import android.util.Log
 import androidx.paging.*
 import com.eziosoft.parisinnumbers.domain.Movie
 import com.eziosoft.parisinnumbers.domain.toMovie
@@ -19,7 +18,6 @@ class MoviesRepositoryImpl(private val api: MoviesAPI) : MoviesRepository {
         config = PagingConfig(pageSize = PAGE_SIZE)
     ).flow.map { pagingData ->
         pagingData.map { record ->
-            Log.d("aaaa", "getMovies: $record")
             record.record.toMovie()
         }
     }

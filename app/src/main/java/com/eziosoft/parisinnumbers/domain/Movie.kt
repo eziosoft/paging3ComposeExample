@@ -22,18 +22,18 @@ data class Movie(
 
 fun RecordX.toMovie() = Movie(
     id = id,
-    address = fields.adresse_lieu?: "",
-    year = fields.annee_tournage?: "",
+    address = fields.adresse_lieu ?: "",
+    year = fields.annee_tournage ?: "",
     ardt_lieu = fields.ardt_lieu ?: "",
     lon = fields.geo_point_2d.lon,
     lat = fields.geo_point_2d.lat,
-    startDate = fields.date_debut?: "",
-    endDate = fields.date_fin?: "",
-    placeId = fields.id_lieu?: "",
+    startDate = fields.date_debut ?: "",
+    endDate = fields.date_fin ?: "",
+    placeId = fields.id_lieu ?: "",
     producer = fields.nom_producteur ?: "",
     realisation = fields.nom_realisateur ?: "",
-    title = fields.nom_tournage?: "",
-    type = fields.type_tournage?: ""
+    title = fields.nom_tournage ?: "",
+    type = fields.type_tournage ?: ""
 )
 
 fun SingleRecord.toMovie() = Movie(

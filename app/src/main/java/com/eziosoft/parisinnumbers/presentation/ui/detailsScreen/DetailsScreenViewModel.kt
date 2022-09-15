@@ -54,7 +54,6 @@ class DetailsScreenViewModel(
 
     private fun getMovie(id: String) = viewModelScope.launch(Dispatchers.IO) {
         repository.getMovie(id).onSuccess { record ->
-            Log.d("aaa", "getMovie: $record")
             record?.let {
                 _contentFlow.emit(it.toScreenState())
             }
