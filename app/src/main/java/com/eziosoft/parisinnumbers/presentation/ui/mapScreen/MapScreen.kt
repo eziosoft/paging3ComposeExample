@@ -6,7 +6,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.TileProvider
 import com.google.maps.android.compose.*
+import com.google.maps.android.heatmaps.HeatmapTileProvider
+import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.getViewModel
 
 private val PARIS_POSITION = LatLng(48.8566, 2.3522)
@@ -22,14 +25,20 @@ fun MapScreen() {
         mutableStateOf(MapProperties(mapType = MapType.NORMAL))
     }
 
-    val markers = mutableListOf<MarkerState>()
+    var markers by remember {
+        mutableStateOf(listOf<MarkerState>())
+    }
+
+    var heatmapTileProvider: HeatmapTileProvider? by remember {
+        mutableStateOf(null)
+    }
 
     LaunchedEffect(key1 = true) {
-        viewModel.screenStateFlow.collect() { screenState ->
-            markers.clear()
-            markers.add(MarkerState(position = PARIS_POSITION))
-            screenState.markerList.forEach() {
-                markers.add(MarkerState(position = it.position))
+        viewModel.screenStateFlow.collectLatest() { screenState ->
+            markers = screenState.markerList.map { MarkerState(it.position) }
+
+            screenState.heatmapTileProvider?.let {
+                heatmapTileProvider = it
             }
         }
     }
@@ -43,6 +52,10 @@ fun MapScreen() {
         ) {
             markers.forEach() {
                 Marker(state = it)
+            }
+
+            heatmapTileProvider?.let {
+                TileOverlay(tileProvider = heatmapTileProvider as TileProvider)
             }
         }
     }

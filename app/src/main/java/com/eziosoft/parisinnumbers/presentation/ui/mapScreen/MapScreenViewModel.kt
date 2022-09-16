@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.eziosoft.parisinnumbers.domain.MoviesRepository
 import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.heatmaps.HeatmapTileProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -15,7 +16,8 @@ data class Marker(
 )
 
 data class ScreenState(
-    val markerList: List<Marker> = emptyList()
+    val markerList: List<Marker> = emptyList(),
+    val heatmapTileProvider: HeatmapTileProvider? = null
 )
 
 class MapScreenViewModel(
@@ -28,15 +30,19 @@ class MapScreenViewModel(
 
     init {
         viewModelScope.launch {
-            _screenStateFlow.emit(
-                ScreenState(
-                    markerList = actionDispatcher.sharedParameters.mapMovieList.map {
-                        Marker(
-                            LatLng(it.lat, it.lon), name = it.title
-                        )
-                    }
-                )
-            )
+            val allMovies = repository.getAllMovies()
+
+            allMovies.onSuccess { movies ->
+                movies?.let {
+                    val allMarkers = movies.map { Marker(LatLng(it.lat, it.lon), name = it.title) }
+
+                    val heatMapProvider = HeatmapTileProvider.Builder()
+                        .data(allMarkers.map { it.position })
+                        .build()
+
+                    _screenStateFlow.emit(ScreenState(emptyList(), heatMapProvider))
+                }
+            }
         }
     }
 }
