@@ -1,7 +1,6 @@
 package com.eziosoft.parisinnumbers.domain
 
 import androidx.paging.PagingData
-import com.eziosoft.parisinnumbers.domain.Movie
 import kotlinx.coroutines.flow.Flow
 
 interface MoviesRepository {

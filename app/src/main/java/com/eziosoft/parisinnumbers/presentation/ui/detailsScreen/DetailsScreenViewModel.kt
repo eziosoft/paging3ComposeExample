@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.eziosoft.parisinnumbers.domain.MoviesRepository
 import com.eziosoft.parisinnumbers.domain.Movie
+import com.eziosoft.parisinnumbers.domain.MoviesRepository
 import com.eziosoft.parisinnumbers.navigation.Action
 import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
 import com.eziosoft.parisinnumbers.navigation.Destination
