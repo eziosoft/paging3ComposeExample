@@ -1,4 +1,4 @@
-package com.eziosoft.parisinnumbers.data.remote
+package com.eziosoft.parisinnumbers.domain
 
 import androidx.paging.PagingData
 import com.eziosoft.parisinnumbers.domain.Movie

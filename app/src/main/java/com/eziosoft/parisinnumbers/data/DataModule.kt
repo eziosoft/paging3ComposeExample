@@ -1,7 +1,7 @@
 package com.eziosoft.parisinnumbers.data
 
 import com.eziosoft.parisinnumbers.data.remote.MoviesAPI
-import com.eziosoft.parisinnumbers.data.remote.MoviesRepository
+import com.eziosoft.parisinnumbers.domain.MoviesRepository
 import com.eziosoft.parisinnumbers.data.remote.MoviesRepositoryImpl
 import okhttp3.Cache
 import okhttp3.OkHttpClient
