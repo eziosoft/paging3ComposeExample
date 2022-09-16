@@ -46,7 +46,6 @@ fun NavigationComponent(
             processAction(
                 action,
                 navController,
-                actionDispatcher,
                 coroutineScope,
                 bottomSheetScaffoldState
             )
@@ -101,9 +100,7 @@ fun NavigationComponent(
             }
         ) { scaffoldPaddings2 ->
             NavHost(
-                modifier = Modifier
-                    .padding(scaffoldPaddings2)
-                    .padding(horizontal = 4.dp),
+                modifier = Modifier.padding(scaffoldPaddings2),
                 navController = navController,
                 startDestination = startDestination
             ) {
@@ -119,7 +116,6 @@ fun NavigationComponent(
 private fun processAction(
     action: Action,
     navController: NavHostController,
-    actionDispatcher: ActionDispatcher,
     coroutineScope: CoroutineScope,
     bottomSheetScaffoldState: BottomSheetScaffoldState
 ) {

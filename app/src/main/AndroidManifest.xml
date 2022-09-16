@@ -5,13 +5,18 @@
 
 
     <application
+        android:name="com.eziosoft.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ParisInNumbers"
-        android:name="com.eziosoft.App">
+        android:theme="@style/Theme.ParisInNumbers">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/MAP_API_KEY" />
+
         <activity
             android:name=".presentation.ui.mainScreen.MainActivity"
             android:exported="true"

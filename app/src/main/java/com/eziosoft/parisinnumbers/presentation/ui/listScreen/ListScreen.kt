@@ -39,7 +39,10 @@ fun ListScreen() {
             })
 
             LazyColumn(
-                modifier = Modifier.fillMaxSize(), state = listState
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 4.dp),
+                state = listState
             ) {
                 items(movies) { item ->
                     item?.let { ListItem(viewModel, it) }
@@ -86,7 +89,7 @@ fun Search(onSearch: (String) -> Unit) {
     ) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             OutlinedTextField(
-                modifier = Modifier.weight(0.9f),
+                modifier = Modifier.fillMaxWidth(),
                 value = text,
                 maxLines = 1,
                 singleLine = true,
