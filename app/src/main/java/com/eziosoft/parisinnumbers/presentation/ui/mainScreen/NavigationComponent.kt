@@ -6,10 +6,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
@@ -18,6 +22,7 @@ import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
 import com.eziosoft.parisinnumbers.navigation.Destination
 import com.eziosoft.parisinnumbers.presentation.ui.detailsScreen.detailsScreen
 import com.eziosoft.parisinnumbers.presentation.ui.listScreen.listScreen
+import com.eziosoft.parisinnumbers.presentation.ui.mapScreen.mapScreen
 import com.eziosoft.parisinnumbers.presentation.ui.theme.PrimaryLight
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -26,10 +31,11 @@ import kotlinx.coroutines.launch
 @Composable
 fun NavigationComponent(
     modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController(),
-    startDestination: String = Destination.LIST_SCREEN.name,
     actionDispatcher: ActionDispatcher
 ) {
+    val navController: NavHostController = rememberNavController()
+    val startDestination: String = Destination.LIST_SCREEN.name
+
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
     )
@@ -61,17 +67,50 @@ fun NavigationComponent(
                 actionDispatcher.sharedParameters.bottomSheetContent.value()
             }
         },
+
         sheetPeekHeight = 0.dp
-    ) { scaffoldPaddings ->
-        NavHost(
-            modifier = Modifier
-                .padding(scaffoldPaddings)
-                .padding(horizontal = 4.dp),
-            navController = navController,
-            startDestination = startDestination
-        ) {
-            listScreen()
-            detailsScreen()
+    ) { scaffoldPaddings1 ->
+
+        Scaffold(
+            modifier = Modifier.padding(scaffoldPaddings1),
+            bottomBar = {
+                BottomNavigationBar(
+                    navController = navController,
+                    itemsList = listOf(
+                        BottomNavItem(
+                            name = "List",
+                            route = Destination.LIST_SCREEN.name,
+                            icon = Icons.Default.List
+                        ),
+                        BottomNavItem(
+                            name = "Map",
+                            route = Destination.MAP_SCREEN.name,
+                            icon = Icons.Default.LocationOn
+                        )
+                    ),
+                    onItemClick = { bottomNavItem ->
+                        navController.navigate(bottomNavItem.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                )
+            }
+        ) { scaffoldPaddings2 ->
+            NavHost(
+                modifier = Modifier
+                    .padding(scaffoldPaddings2)
+                    .padding(horizontal = 4.dp),
+                navController = navController,
+                startDestination = startDestination
+            ) {
+                listScreen()
+                detailsScreen()
+                mapScreen()
+            }
         }
     }
 }
@@ -93,6 +132,10 @@ private fun processAction(
                 )
                 Destination.DETAILS_SCREEN -> navController.navigate(
                     Destination.DETAILS_SCREEN.name
+                )
+                Destination.MAP_SCREEN -> navController.popBackStack(
+                    Destination.MAP_SCREEN.name,
+                    inclusive = false
                 )
             }
         is Action.ToggleBottomSheet -> {
