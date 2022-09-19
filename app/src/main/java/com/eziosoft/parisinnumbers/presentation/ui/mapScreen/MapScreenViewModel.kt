@@ -1,13 +1,12 @@
 package com.eziosoft.parisinnumbers.presentation.ui.mapScreen
 
+import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eziosoft.parisinnumbers.domain.MoviesRepository
 import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.heatmaps.HeatmapTileProvider
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 data class Marker(
@@ -25,8 +24,8 @@ class MapScreenViewModel(
     private val actionDispatcher: ActionDispatcher
 ) : ViewModel() {
 
-    private val _screenStateFlow = MutableStateFlow(ScreenState())
-    val screenStateFlow = _screenStateFlow.asStateFlow()
+    var screenState by mutableStateOf(ScreenState())
+        private set
 
     init {
         viewModelScope.launch {
@@ -40,7 +39,10 @@ class MapScreenViewModel(
                         .data(allMarkers.map { it.position })
                         .build()
 
-                    _screenStateFlow.emit(ScreenState(emptyList(), heatMapProvider))
+                    screenState = screenState.copy(
+                        markerList = emptyList(),
+                        heatmapTileProvider = heatMapProvider
+                    )
                 }
             }
         }

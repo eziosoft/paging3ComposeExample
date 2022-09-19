@@ -9,7 +9,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.TileProvider
 import com.google.maps.android.compose.*
 import com.google.maps.android.heatmaps.HeatmapTileProvider
-import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.getViewModel
 
 private val PARIS_POSITION = LatLng(48.8566, 2.3522)
@@ -33,8 +32,8 @@ fun MapScreen() {
         mutableStateOf(null)
     }
 
-    LaunchedEffect(key1 = true) {
-        viewModel.screenStateFlow.collectLatest() { screenState ->
+    LaunchedEffect(key1 = viewModel.screenState) {
+        viewModel.screenState.let { screenState ->
             markers = screenState.markerList.map { MarkerState(it.position) }
 
             screenState.heatmapTileProvider?.let {

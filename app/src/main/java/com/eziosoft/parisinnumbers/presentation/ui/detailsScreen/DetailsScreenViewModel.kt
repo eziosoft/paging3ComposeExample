@@ -1,7 +1,9 @@
 package com.eziosoft.parisinnumbers.presentation.ui.detailsScreen
 
 import android.util.Log
+import androidx.compose.runtime.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eziosoft.parisinnumbers.domain.Movie
@@ -10,8 +12,6 @@ import com.eziosoft.parisinnumbers.navigation.Action
 import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
 import com.eziosoft.parisinnumbers.navigation.Destination
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 data class ScreenState(
@@ -45,8 +45,8 @@ class DetailsScreenViewModel(
     private val repository: MoviesRepository,
     val actionDispatcher: ActionDispatcher
 ) : ViewModel() {
-    private val _contentFlow = MutableStateFlow(ScreenState())
-    val screenStateFlow = _contentFlow.asStateFlow()
+    var screenState by mutableStateOf(ScreenState())
+        private set
 
     init {
         getMovie(actionDispatcher.sharedParameters.recordId)
@@ -55,7 +55,7 @@ class DetailsScreenViewModel(
     private fun getMovie(id: String) = viewModelScope.launch(Dispatchers.IO) {
         repository.getMovie(id).onSuccess { record ->
             record?.let {
-                _contentFlow.emit(it.toScreenState())
+                screenState = it.toScreenState()
             }
         }
             .onFailure {
