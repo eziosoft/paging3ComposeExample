@@ -2,12 +2,12 @@ package com.eziosoft.parisinnumbers.data.remote
 
 import androidx.paging.*
 import com.eziosoft.parisinnumbers.domain.Movie
-import com.eziosoft.parisinnumbers.domain.MoviesRepository
+import com.eziosoft.parisinnumbers.domain.MoviesAPIRepository
 import com.eziosoft.parisinnumbers.domain.toMovie
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class MoviesRepositoryImpl(private val api: MoviesAPI) : MoviesRepository {
+class MoviesAPIRepositoryImpl(private val api: MoviesAPI) : MoviesAPIRepository {
     private var searchText = ""
     private var pagingSource: MoviesPagingSource = MoviesPagingSource(api, Datasets.MOVIES, searchText)
 

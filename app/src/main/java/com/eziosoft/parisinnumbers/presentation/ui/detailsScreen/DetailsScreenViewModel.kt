@@ -7,7 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eziosoft.parisinnumbers.domain.Movie
-import com.eziosoft.parisinnumbers.domain.MoviesRepository
+import com.eziosoft.parisinnumbers.domain.MoviesAPIRepository
 import com.eziosoft.parisinnumbers.navigation.Action
 import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
 import com.eziosoft.parisinnumbers.navigation.Destination
@@ -42,7 +42,7 @@ fun Movie.toScreenState() =
     )
 
 class DetailsScreenViewModel(
-    private val repository: MoviesRepository,
+    private val repository: MoviesAPIRepository,
     val actionDispatcher: ActionDispatcher
 ) : ViewModel() {
     var screenState by mutableStateOf(ScreenState())
