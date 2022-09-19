@@ -4,17 +4,21 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.TileProvider
+import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.compose.*
 import com.google.maps.android.heatmaps.HeatmapTileProvider
 import org.koin.androidx.compose.getViewModel
 
 private val PARIS_POSITION = LatLng(48.8566, 2.3522)
 
+@OptIn(MapsComposeExperimentalApi::class)
 @Composable
 fun MapScreen() {
+    val context = LocalContext.current
+
     val viewModel: MapScreenViewModel = getViewModel()
     val cameraPositionState = rememberCameraPositionState() {
         position = CameraPosition.fromLatLngZoom(PARIS_POSITION, 11f)
@@ -25,7 +29,7 @@ fun MapScreen() {
     }
 
     var markers by remember {
-        mutableStateOf(listOf<MarkerState>())
+        mutableStateOf(listOf<ClusterMarker>())
     }
 
     var heatmapTileProvider: HeatmapTileProvider? by remember {
@@ -34,7 +38,7 @@ fun MapScreen() {
 
     LaunchedEffect(key1 = viewModel.screenState) {
         viewModel.screenState.let { screenState ->
-            markers = screenState.markerList.map { MarkerState(it.position) }
+            markers = screenState.markerList.map { ClusterMarker(it.position, it.name, it.name) }
 
             screenState.heatmapTileProvider?.let {
                 heatmapTileProvider = it
@@ -49,12 +53,18 @@ fun MapScreen() {
             properties = properties,
             cameraPositionState = cameraPositionState
         ) {
-            markers.forEach() {
-                Marker(state = it)
+
+            MapEffect(key1 = markers) { googleMap ->
+                val clusterManager = ClusterManager<ClusterMarker>(context, googleMap)
+                clusterManager.setAnimation(false)
+                googleMap.setOnCameraIdleListener(clusterManager)
+                googleMap.setOnMarkerClickListener(clusterManager)
+
+                clusterManager.addItems(markers.map { ClusterMarker(it.position, "", "") })
             }
 
             heatmapTileProvider?.let {
-                TileOverlay(tileProvider = heatmapTileProvider as TileProvider)
+                TileOverlay(tileProvider = it)
             }
         }
     }
