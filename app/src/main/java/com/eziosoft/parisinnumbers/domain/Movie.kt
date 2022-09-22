@@ -1,8 +1,8 @@
 package com.eziosoft.parisinnumbers.domain
 
-import com.eziosoft.parisinnumbers.data.remote.models.allMovies.AllMoviesItem
-import com.eziosoft.parisinnumbers.data.remote.models.records.RecordX
-import com.eziosoft.parisinnumbers.data.remote.models.singleRecord.SingleRecord
+import com.eziosoft.parisinnumbers.data.remote.OpenAPI.models.allMovies.AllMoviesItem
+import com.eziosoft.parisinnumbers.data.remote.OpenAPI.models.records.RecordX
+import com.eziosoft.parisinnumbers.data.remote.OpenAPI.models.singleRecord.SingleRecord
 
 data class Movie(
     val id: String,
@@ -20,7 +20,7 @@ data class Movie(
     val type: String
 )
 
-fun RecordX.toMovie() = Movie(
+fun com.eziosoft.parisinnumbers.data.remote.OpenAPI.models.records.RecordX.toMovie() = Movie(
     id = id,
     address = fields.adresse_lieu ?: "",
     year = fields.annee_tournage ?: "",
@@ -36,7 +36,7 @@ fun RecordX.toMovie() = Movie(
     type = fields.type_tournage ?: ""
 )
 
-fun SingleRecord.toMovie() = Movie(
+fun com.eziosoft.parisinnumbers.data.remote.OpenAPI.models.singleRecord.SingleRecord.toMovie() = Movie(
     id = record.id,
     address = record.fields.adresse_lieu,
     year = record.fields.annee_tournage,
@@ -52,7 +52,7 @@ fun SingleRecord.toMovie() = Movie(
     type = record.fields.type_tournage
 )
 
-fun AllMoviesItem.toMovie() = Movie(
+fun com.eziosoft.parisinnumbers.data.remote.OpenAPI.models.allMovies.AllMoviesItem.toMovie() = Movie(
     id = "",
     address = adresse_lieu ?: "",
     year = annee_tournage ?: "",

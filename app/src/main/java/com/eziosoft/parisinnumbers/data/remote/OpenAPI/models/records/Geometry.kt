@@ -1,4 +1,4 @@
-package com.eziosoft.parisinnumbers.data.remote.models.records
+package com.eziosoft.parisinnumbers.data.remote.OpenAPI.models.records
 
 data class Geometry(
     val coordinates: List<Double>,

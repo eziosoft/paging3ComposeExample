@@ -2,7 +2,7 @@ package com.eziosoft.parisinnumbers.data.remote
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.eziosoft.parisinnumbers.data.remote.models.records.Record
+import com.eziosoft.parisinnumbers.data.remote.OpenAPI.Datasets
 import java.net.URL
 import java.net.URLDecoder
 
@@ -10,13 +10,13 @@ class MoviesPagingSource(
     private val api: MoviesAPI,
     private val dataset: Datasets,
     private val searchText: String
-) : PagingSource<Int, Record>() {
+) : PagingSource<Int, com.eziosoft.parisinnumbers.data.remote.OpenAPI.models.records.Record>() {
 
-    override fun getRefreshKey(state: PagingState<Int, Record>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, com.eziosoft.parisinnumbers.data.remote.OpenAPI.models.records.Record>): Int? {
         return state.anchorPosition
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Record> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, com.eziosoft.parisinnumbers.data.remote.OpenAPI.models.records.Record> {
         return try {
             val nextPageNumber = params.key ?: 0
             val response = api.getMoviesPaged(

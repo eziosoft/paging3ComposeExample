@@ -1,4 +1,4 @@
-package com.eziosoft.parisinnumbers.data.remote.models.records
+package com.eziosoft.parisinnumbers.data.remote.OpenAPI.models.records
 
 data class Fields(
     val adresse_lieu: String?,
@@ -8,8 +8,8 @@ data class Fields(
     val coord_y: Double?,
     val date_debut: String?,
     val date_fin: String?,
-    val geo_point_2d: GeoPoint2d,
-    val geo_shape: GeoShape?,
+    val geo_point_2d: com.eziosoft.parisinnumbers.data.remote.OpenAPI.models.records.GeoPoint2d,
+    val geo_shape: com.eziosoft.parisinnumbers.data.remote.OpenAPI.models.records.GeoShape?,
     val id_lieu: String?,
     val nom_producteur: String?,
     val nom_realisateur: String?,

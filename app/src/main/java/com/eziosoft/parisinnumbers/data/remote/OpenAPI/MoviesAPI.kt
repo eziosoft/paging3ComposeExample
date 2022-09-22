@@ -1,8 +1,5 @@
-package com.eziosoft.parisinnumbers.data.remote
+package com.eziosoft.parisinnumbers.data.remote.OpenAPI
 
-import com.eziosoft.parisinnumbers.data.remote.models.allMovies.AllMovies
-import com.eziosoft.parisinnumbers.data.remote.models.records.Movies
-import com.eziosoft.parisinnumbers.data.remote.models.singleRecord.SingleRecord
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -24,16 +21,16 @@ interface MoviesAPI {
         @Query("where") where: String?, // ex "nom_tournage like \"ALICE\""
         @Query("order_by") orderBy: String?,
         @Query("group_by") groupBy: String?
-    ): Movies
+    ): com.eziosoft.parisinnumbers.data.remote.OpenAPI.models.records.Movies
 
     @GET("{dataset}/records/{record_id}")
     suspend fun getMovieById(
         @Path("dataset") datasets: String,
         @Path("record_id") recordId: String
-    ): Response<SingleRecord>
+    ): Response<com.eziosoft.parisinnumbers.data.remote.OpenAPI.models.singleRecord.SingleRecord>
 
     @GET("{dataset}/exports/json")
     suspend fun getAllMovies(
         @Path("dataset") datasets: String
-    ): Response<AllMovies>
+    ): Response<com.eziosoft.parisinnumbers.data.remote.OpenAPI.models.allMovies.AllMovies>
 }

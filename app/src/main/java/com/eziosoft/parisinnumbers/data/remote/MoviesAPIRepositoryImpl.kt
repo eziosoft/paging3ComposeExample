@@ -1,6 +1,9 @@
 package com.eziosoft.parisinnumbers.data.remote
 
 import androidx.paging.*
+import com.eziosoft.parisinnumbers.data.remote.OpenAPI.Datasets
+import com.eziosoft.parisinnumbers.data.remote.OpenAPI.MoviesAPI
+import com.eziosoft.parisinnumbers.data.remote.OpenAPI.PAGE_SIZE
 import com.eziosoft.parisinnumbers.domain.Movie
 import com.eziosoft.parisinnumbers.domain.MoviesAPIRepository
 import com.eziosoft.parisinnumbers.domain.toMovie

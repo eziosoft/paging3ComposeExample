@@ -1,4 +1,4 @@
-package com.eziosoft.parisinnumbers.data.remote.models.allMovies
+package com.eziosoft.parisinnumbers.data.remote.OpenAPI.models.allMovies
 
 data class Geometry(
     val coordinates: List<Double>,
