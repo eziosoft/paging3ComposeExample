@@ -11,7 +11,7 @@ import com.eziosoft.parisinnumbers.domain.TheMovieDbRepository
 import com.eziosoft.parisinnumbers.navigation.Action
 import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
 import com.eziosoft.parisinnumbers.navigation.Destination
-import kotlinx.coroutines.Dispatchers
+import com.eziosoft.parisinnumbers.presentation.ProjectDispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +21,8 @@ import kotlinx.coroutines.launch
 class ListScreenViewModel(
     private val repository: OpenApiRepository,
     private val movieDbRepository: TheMovieDbRepository,
-    private val actionDispatcher: ActionDispatcher
+    private val actionDispatcher: ActionDispatcher,
+    private val projectDispatchers: ProjectDispatchers
 ) : ViewModel() {
 
     private val searchFlow = MutableStateFlow("")
@@ -33,12 +34,12 @@ class ListScreenViewModel(
     fun getMovies(): Flow<PagingData<Movie>> = repository.getMovies().cachedIn(viewModelScope)
 
     fun search(text: String) {
-        viewModelScope.launch { searchFlow.emit(text) }
+        viewModelScope.launch(projectDispatchers.mainDispatcher) { searchFlow.emit(text) }
     }
 
     @OptIn(FlowPreview::class)
     private fun observeSearch() {
-        viewModelScope.launch {
+        viewModelScope.launch(projectDispatchers.mainDispatcher) {
             searchFlow.debounce(1500).collect {
                 repository.searchMovieByTitle(it)
             }
@@ -46,7 +47,7 @@ class ListScreenViewModel(
     }
 
     fun searchInfoAboutMovie(title: String, callback: (posterUrl: String) -> Unit) =
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(projectDispatchers.ioDispatcher) {
             movieDbRepository.search(title, "4582c6d7dbd578f026ba7614d760d566").onSuccess { list ->
                 list?.let { listOfMovies ->
                     if (listOfMovies.isNotEmpty()) {
@@ -63,7 +64,7 @@ class ListScreenViewModel(
         }
 
     fun navigateToDetails(recordId: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(projectDispatchers.mainDispatcher) {
             actionDispatcher.sharedParameters.recordId = recordId
             actionDispatcher.dispatchAction(Action.Navigate(Destination.DETAILS_SCREEN))
         }

@@ -13,6 +13,7 @@ import com.eziosoft.parisinnumbers.domain.TheMovieDbResult
 import com.eziosoft.parisinnumbers.navigation.Action
 import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
 import com.eziosoft.parisinnumbers.navigation.Destination
+import com.eziosoft.parisinnumbers.presentation.ProjectDispatchers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -46,7 +47,8 @@ fun Movie.toScreenState() = ScreenState(
 class DetailsScreenViewModel(
     private val repository: OpenApiRepository,
     private val movieDbRepository: TheMovieDbRepository,
-    val actionDispatcher: ActionDispatcher
+    val actionDispatcher: ActionDispatcher,
+    private val projectDispatchers: ProjectDispatchers
 ) : ViewModel() {
     var screenState by mutableStateOf(ScreenState())
         private set
@@ -55,7 +57,7 @@ class DetailsScreenViewModel(
         getMovie(actionDispatcher.sharedParameters.recordId)
     }
 
-    private fun getMovie(id: String) = viewModelScope.launch(Dispatchers.IO) {
+    private fun getMovie(id: String) = viewModelScope.launch(projectDispatchers.ioDispatcher) {
         repository.getMovie(id).onSuccess { record ->
             record?.let {
                 screenState = it.toScreenState()
@@ -83,26 +85,26 @@ class DetailsScreenViewModel(
     }
 
     fun navigateToList() {
-        viewModelScope.launch {
+        viewModelScope.launch(projectDispatchers.mainDispatcher) {
             actionDispatcher.dispatchAction(Action.Navigate(Destination.LIST_SCREEN))
         }
     }
 
     fun showBottomSheet(content: @Composable () -> Unit) {
-        viewModelScope.launch {
+        viewModelScope.launch(projectDispatchers.mainDispatcher) {
             actionDispatcher.sharedParameters.bottomSheetContent.value = content
             actionDispatcher.dispatchAction(Action.ToggleBottomSheet(true))
         }
     }
 
     fun hideBottomSheet() {
-        viewModelScope.launch {
+        viewModelScope.launch(projectDispatchers.mainDispatcher) {
             actionDispatcher.dispatchAction(Action.ToggleBottomSheet(false))
         }
     }
 
     fun showSnackbar(text: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(projectDispatchers.mainDispatcher) {
             actionDispatcher.dispatchAction(Action.ShowSnackbar(text))
         }
     }

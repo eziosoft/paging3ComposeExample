@@ -43,19 +43,10 @@ val dataModule = module {
     }
 
     single<TheMovieDb> {
-        val interceptor = HttpLoggingInterceptor()
-        interceptor.level = HttpLoggingInterceptor.Level.BODY
-
-        val okHttpClient = OkHttpClient.Builder().cache(
-            Cache(
-                File(androidContext().cacheDir, "http_cache"),
-                50L * 1024L * 1024L // 50 MiB
-            )
-        ).addInterceptor(interceptor).build()
         val retrofit = Retrofit.Builder()
             .baseUrl(TheMovieDb.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
+            .client(get())
             .build()
         retrofit.create(TheMovieDb::class.java)
     }
