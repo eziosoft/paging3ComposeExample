@@ -14,7 +14,7 @@ val presentationModule = module {
 
     viewModel {
         DetailsScreenViewModel(
-            repository = get(),
+            openApiRepository = get(),
             actionDispatcher = get(),
             movieDbRepository = get(),
             projectDispatchers = get()

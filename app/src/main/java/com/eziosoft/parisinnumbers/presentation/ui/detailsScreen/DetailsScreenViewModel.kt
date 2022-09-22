@@ -45,20 +45,22 @@ fun Movie.toScreenState() = ScreenState(
 )
 
 class DetailsScreenViewModel(
-    private val repository: OpenApiRepository,
+    private val openApiRepository: OpenApiRepository,
     private val movieDbRepository: TheMovieDbRepository,
     val actionDispatcher: ActionDispatcher,
     private val projectDispatchers: ProjectDispatchers
 ) : ViewModel() {
-    var screenState by mutableStateOf(ScreenState())
-        private set
 
     init {
         getMovie(actionDispatcher.sharedParameters.recordId)
     }
 
-    private fun getMovie(id: String) = viewModelScope.launch(projectDispatchers.ioDispatcher) {
-        repository.getMovie(id).onSuccess { record ->
+    var screenState by mutableStateOf(ScreenState())
+        private set
+
+
+     fun getMovie(id: String) = viewModelScope.launch(projectDispatchers.ioDispatcher) {
+        openApiRepository.getMovie(id).onSuccess { record ->
             record?.let {
                 screenState = it.toScreenState()
                 searchInfoAboutMovie(screenState.movieTitle)

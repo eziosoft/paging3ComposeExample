@@ -1,4 +1,4 @@
-package com.eziosoft.parisinnumbers.data.remote
+package com.eziosoft.parisinnumbers.presentation.ui.listScreen
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
