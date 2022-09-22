@@ -1,12 +1,12 @@
 package com.eziosoft.parisinnumbers.presentation.ui.listScreen
 
 import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -17,13 +17,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import coil.compose.rememberAsyncImagePainter
+import coil.compose.AsyncImage
 import com.eziosoft.parisinnumbers.domain.Movie
 import org.koin.androidx.compose.getViewModel
 
@@ -79,7 +80,8 @@ private fun ListItem(
             }
             .fillMaxWidth()
             .padding(4.dp),
-        elevation = 5.dp
+        elevation = 5.dp,
+        shape = RoundedCornerShape(10.dp)
     ) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Column(modifier = Modifier.padding(8.dp)) {
@@ -87,10 +89,12 @@ private fun ListItem(
                 Text(text = "${record.startDate} - ${record.endDate}")
                 Text(text = record.address)
             }
-            Image(
-                painter = rememberAsyncImagePainter(model = posterUrl),
+            AsyncImage(
+                model = posterUrl,
                 contentDescription = "",
-                modifier = Modifier.height(100.dp)
+                modifier = Modifier
+                    .height(100.dp)
+                    .clip(RoundedCornerShape(10.dp)),
             )
         }
     }
