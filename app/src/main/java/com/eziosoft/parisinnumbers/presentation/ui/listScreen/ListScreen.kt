@@ -1,5 +1,7 @@
 package com.eziosoft.parisinnumbers.presentation.ui.listScreen
 
+import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,6 +23,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import coil.compose.rememberAsyncImagePainter
 import com.eziosoft.parisinnumbers.domain.Movie
 import org.koin.androidx.compose.getViewModel
 
@@ -57,6 +60,18 @@ private fun ListItem(
     viewModel: ListScreenViewModel,
     record: Movie
 ) {
+
+    var posterUrl by remember {
+        mutableStateOf("")
+    }
+
+    LaunchedEffect(key1 = true) {
+        viewModel.searchInfoAboutMovie(record.title) {
+            posterUrl = it
+        }
+        Log.d("aaaa", "ListItem: LaunchEffect")
+    }
+
     Card(
         modifier = Modifier
             .clickable {
@@ -66,10 +81,17 @@ private fun ListItem(
             .padding(4.dp),
         elevation = 5.dp
     ) {
-        Column(modifier = Modifier.padding(8.dp)) {
-            Text(text = record.title, fontWeight = FontWeight.Bold)
-            Text(text = "${record.startDate} - ${record.endDate}")
-            Text(text = record.address)
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Column(modifier = Modifier.padding(8.dp)) {
+                Text(text = record.title, fontWeight = FontWeight.Bold)
+                Text(text = "${record.startDate} - ${record.endDate}")
+                Text(text = record.address)
+            }
+            Image(
+                painter = rememberAsyncImagePainter(model = posterUrl),
+                contentDescription = "",
+                modifier = Modifier.height(100.dp)
+            )
         }
     }
 }

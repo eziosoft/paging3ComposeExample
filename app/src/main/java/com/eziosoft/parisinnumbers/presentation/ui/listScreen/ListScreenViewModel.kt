@@ -1,14 +1,17 @@
 package com.eziosoft.parisinnumbers.presentation.ui.listScreen
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.eziosoft.parisinnumbers.domain.Movie
-import com.eziosoft.parisinnumbers.domain.MoviesAPIRepository
+import com.eziosoft.parisinnumbers.domain.OpenApiRepository
+import com.eziosoft.parisinnumbers.domain.TheMovieDbRepository
 import com.eziosoft.parisinnumbers.navigation.Action
 import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
 import com.eziosoft.parisinnumbers.navigation.Destination
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +19,8 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 
 class ListScreenViewModel(
-    private val repository: MoviesAPIRepository,
+    private val repository: OpenApiRepository,
+    private val movieDbRepository: TheMovieDbRepository,
     private val actionDispatcher: ActionDispatcher
 ) : ViewModel() {
 
@@ -40,6 +44,23 @@ class ListScreenViewModel(
             }
         }
     }
+
+    fun searchInfoAboutMovie(title: String, callback: (posterUrl: String) -> Unit) =
+        viewModelScope.launch(Dispatchers.IO) {
+            movieDbRepository.search(title, "4582c6d7dbd578f026ba7614d760d566").onSuccess { list ->
+                list?.let { listOfMovies ->
+                    if (listOfMovies.isNotEmpty()) {
+                        listOfMovies.forEach { movie ->
+                            if (movie.title?.uppercase() == title.uppercase() && movie.poster_path != null) {
+                                callback(movie.poster_path)
+                            }
+                        }
+                    }
+                }
+            }.onFailure {
+                Log.d("aaa", "searchInfoAboutMovie: isFailure ${it.message}")
+            }
+        }
 
     fun navigateToDetails(recordId: String) {
         viewModelScope.launch {

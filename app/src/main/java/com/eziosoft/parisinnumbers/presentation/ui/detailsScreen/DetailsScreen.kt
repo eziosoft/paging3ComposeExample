@@ -3,8 +3,11 @@ package com.eziosoft.parisinnumbers.presentation.ui.detailsScreen
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -17,7 +20,10 @@ import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.Role.Companion.Image
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
+import coil.compose.rememberAsyncImagePainter
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -70,6 +76,24 @@ private fun Content(
 
         IconButton(onClick = { viewModel.showSnackbar("The title is ${screenState.movieTitle}") }) {
             Icon(imageVector = Icons.Default.Info, contentDescription = "Info")
+        }
+
+        screenState.infoAboutMovie?.let { movieInfo ->
+            movieInfo.poster_path?.let {
+                Log.d("aaa", "Content: $it")
+                Image(
+                    painter = rememberAsyncImagePainter(model = it),
+                    contentDescription = "",
+                    modifier = Modifier.size(200.dp)
+                )
+            }
+
+            movieInfo.title?.let {
+                Text(movieInfo.title)
+            }
+            movieInfo.overview?.let {
+                Text(it)
+            }
         }
     }
 }

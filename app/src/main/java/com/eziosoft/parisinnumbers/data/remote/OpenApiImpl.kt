@@ -5,12 +5,12 @@ import com.eziosoft.parisinnumbers.data.remote.OpenAPI.Datasets
 import com.eziosoft.parisinnumbers.data.remote.OpenAPI.MoviesAPI
 import com.eziosoft.parisinnumbers.data.remote.OpenAPI.PAGE_SIZE
 import com.eziosoft.parisinnumbers.domain.Movie
-import com.eziosoft.parisinnumbers.domain.MoviesAPIRepository
+import com.eziosoft.parisinnumbers.domain.OpenApiRepository
 import com.eziosoft.parisinnumbers.domain.toMovie
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class MoviesAPIRepositoryImpl(private val api: MoviesAPI) : MoviesAPIRepository {
+class OpenApiImpl(private val api: MoviesAPI) : OpenApiRepository {
     private var searchText = ""
     private var pagingSource: MoviesPagingSource = MoviesPagingSource(api, Datasets.MOVIES, searchText)
 

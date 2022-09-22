@@ -1,9 +1,5 @@
 package com.eziosoft.parisinnumbers.domain
 
-import com.eziosoft.parisinnumbers.data.remote.OpenAPI.models.allMovies.AllMoviesItem
-import com.eziosoft.parisinnumbers.data.remote.OpenAPI.models.records.RecordX
-import com.eziosoft.parisinnumbers.data.remote.OpenAPI.models.singleRecord.SingleRecord
-
 data class Movie(
     val id: String,
     val address: String,

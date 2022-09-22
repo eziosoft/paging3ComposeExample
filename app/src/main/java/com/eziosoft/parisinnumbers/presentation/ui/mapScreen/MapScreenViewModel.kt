@@ -3,7 +3,7 @@ package com.eziosoft.parisinnumbers.presentation.ui.mapScreen
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.eziosoft.parisinnumbers.domain.MoviesAPIRepository
+import com.eziosoft.parisinnumbers.domain.OpenApiRepository
 import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.heatmaps.HeatmapTileProvider
@@ -20,7 +20,7 @@ data class ScreenState(
 )
 
 class MapScreenViewModel(
-    private val repository: MoviesAPIRepository,
+    private val repository: OpenApiRepository,
     private val actionDispatcher: ActionDispatcher
 ) : ViewModel() {
 

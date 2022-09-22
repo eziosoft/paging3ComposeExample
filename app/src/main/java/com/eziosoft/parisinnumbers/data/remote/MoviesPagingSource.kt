@@ -3,6 +3,8 @@ package com.eziosoft.parisinnumbers.data.remote
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.eziosoft.parisinnumbers.data.remote.OpenAPI.Datasets
+import com.eziosoft.parisinnumbers.data.remote.OpenAPI.MoviesAPI
+import com.eziosoft.parisinnumbers.data.remote.OpenAPI.PAGE_SIZE
 import java.net.URL
 import java.net.URLDecoder
 

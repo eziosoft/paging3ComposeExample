@@ -7,7 +7,9 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eziosoft.parisinnumbers.domain.Movie
-import com.eziosoft.parisinnumbers.domain.MoviesAPIRepository
+import com.eziosoft.parisinnumbers.domain.OpenApiRepository
+import com.eziosoft.parisinnumbers.domain.TheMovieDbRepository
+import com.eziosoft.parisinnumbers.domain.TheMovieDbResult
 import com.eziosoft.parisinnumbers.navigation.Action
 import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
 import com.eziosoft.parisinnumbers.navigation.Destination
@@ -24,25 +26,26 @@ data class ScreenState(
     val realisation: String = "",
     val type: String = "",
     val lat: Double = 0.0,
-    val lon: Double = 0.0
+    val lon: Double = 0.0,
+    val infoAboutMovie: TheMovieDbResult? = null
 )
 
-fun Movie.toScreenState() =
-    ScreenState(
-        movieTitle = title,
-        address = address,
-        year = year,
-        startDate = startDate,
-        endDate = endDate,
-        producer = producer,
-        realisation = realisation,
-        type = type,
-        lat = lat,
-        lon = lon
-    )
+fun Movie.toScreenState() = ScreenState(
+    movieTitle = title,
+    address = address,
+    year = year,
+    startDate = startDate,
+    endDate = endDate,
+    producer = producer,
+    realisation = realisation,
+    type = type,
+    lat = lat,
+    lon = lon
+)
 
 class DetailsScreenViewModel(
-    private val repository: MoviesAPIRepository,
+    private val repository: OpenApiRepository,
+    private val movieDbRepository: TheMovieDbRepository,
     val actionDispatcher: ActionDispatcher
 ) : ViewModel() {
     var screenState by mutableStateOf(ScreenState())
@@ -56,11 +59,27 @@ class DetailsScreenViewModel(
         repository.getMovie(id).onSuccess { record ->
             record?.let {
                 screenState = it.toScreenState()
+                searchInfoAboutMovie(screenState.movieTitle)
             }
+        }.onFailure {
+            Log.d("aaa", "getMovie: isFailure ${it.message}")
         }
-            .onFailure {
-                Log.d("aaa", "getMovie: isFailure ${it.message}")
+    }
+
+    private fun searchInfoAboutMovie(title: String) = viewModelScope.launch(Dispatchers.IO) {
+        movieDbRepository.search(title, "4582c6d7dbd578f026ba7614d760d566").onSuccess { list ->
+            list?.let { listOfMovies ->
+                if (listOfMovies.isNotEmpty()) {
+                    listOfMovies.forEach { movie ->
+                        if (movie.title?.uppercase() == title.uppercase()) {
+                            screenState = screenState.copy(infoAboutMovie = movie)
+                        }
+                    }
+                }
             }
+        }.onFailure {
+            Log.d("aaa", "searchInfoAboutMovie: isFailure ${it.message}")
+        }
     }
 
     fun navigateToList() {
