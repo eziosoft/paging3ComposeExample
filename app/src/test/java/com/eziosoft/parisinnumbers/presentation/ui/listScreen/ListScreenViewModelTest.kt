@@ -1,4 +1,4 @@
-package com.eziosoft.parisinnumbers.presentation.ui.detailsScreen
+package com.eziosoft.parisinnumbers.presentation.ui.listScreen
 
 import com.eziosoft.parisinnumbers.MainCoroutineRule
 import com.eziosoft.parisinnumbers.domain.Movie
@@ -15,13 +15,13 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.TestRule
-import kotlin.test.assertEquals
+
 
 @OptIn(ExperimentalCoroutinesApi::class)
-internal class DetailsScreenViewModelTest {
+internal class ListScreenViewModelTest {
+
     @get:Rule
-    var rule: TestRule = MainCoroutineRule()
+    val rule = MainCoroutineRule()
 
     private val sampleMovie = Movie(
         "id",
@@ -39,33 +39,29 @@ internal class DetailsScreenViewModelTest {
         "type"
     )
 
+    private val openApiRepo: OpenApiRepository = mockk {
+        coEvery { getMovie(any()) } returns Result.success(sampleMovie)
+    }
+
+    private val movieDbRepo: TheMovieDbRepository = mockk {
+        coEvery { search(any(), any()) } returns Result.success(emptyList())
+    }
     private val actionDispatcher: ActionDispatcher = ActionDispatcher(SharedParameters())
     private val projectDispatchers = ProjectDispatchers(
         mainDispatcher = Dispatchers.Main,
         ioDispatcher = Dispatchers.Main
     )
 
-    private lateinit var viewModel: DetailsScreenViewModel
-
     @Test
-    fun `viewModel shows initial state`() = runTest {
-        val openApiRepo: OpenApiRepository = mockk {
-            coEvery { getMovie(any()) } returns Result.success(sampleMovie)
-        }
-        val movieDbRepo: TheMovieDbRepository = mockk {
-            coEvery { search(any(), any()) } returns Result.success(emptyList())
-        }
-
-        viewModel = DetailsScreenViewModel(
-            openApiRepository = openApiRepo,
-            movieDbRepository = movieDbRepo,
-            actionDispatcher = actionDispatcher,
-            projectDispatchers = projectDispatchers
+    fun `search test`() = runTest {
+        val viewModel = ListScreenViewModel(
+            openApiRepo,
+            movieDbRepo,
+            actionDispatcher,
+            projectDispatchers
         )
 
+
         advanceUntilIdle()
-        val exceptedState: ScreenState = sampleMovie.toScreenState()
-        val actualState = viewModel.screenState
-        assertEquals(exceptedState, actualState)
     }
 }

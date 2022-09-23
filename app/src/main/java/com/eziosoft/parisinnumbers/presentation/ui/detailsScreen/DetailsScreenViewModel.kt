@@ -58,8 +58,7 @@ class DetailsScreenViewModel(
     var screenState by mutableStateOf(ScreenState())
         private set
 
-
-     fun getMovie(id: String) = viewModelScope.launch(projectDispatchers.ioDispatcher) {
+    fun getMovie(id: String) = viewModelScope.launch(projectDispatchers.ioDispatcher) {
         openApiRepository.getMovie(id).onSuccess { record ->
             record?.let {
                 screenState = it.toScreenState()
