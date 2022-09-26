@@ -1,9 +1,9 @@
 package com.eziosoft.parisinnumbers.presentation.ui.detailsScreen
 
+import android.os.Parcelable
 import android.util.Log
-import androidx.compose.runtime.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eziosoft.parisinnumbers.domain.Movie
@@ -16,7 +16,9 @@ import com.eziosoft.parisinnumbers.navigation.Destination
 import com.eziosoft.parisinnumbers.presentation.ProjectDispatchers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class ScreenState(
     val movieTitle: String = "",
     val address: String = "",
@@ -29,7 +31,7 @@ data class ScreenState(
     val lat: Double = 0.0,
     val lon: Double = 0.0,
     val infoAboutMovie: TheMovieDbResult? = null
-)
+) : Parcelable
 
 fun Movie.toScreenState() = ScreenState(
     movieTitle = title,
@@ -45,24 +47,29 @@ fun Movie.toScreenState() = ScreenState(
 )
 
 class DetailsScreenViewModel(
+    private val savedStateHandle: SavedStateHandle,
     private val openApiRepository: OpenApiRepository,
     private val movieDbRepository: TheMovieDbRepository,
     val actionDispatcher: ActionDispatcher,
-    private val projectDispatchers: ProjectDispatchers
+    private val projectDispatchers: ProjectDispatchers,
 ) : ViewModel() {
+
+    enum class SharedParamsNames {
+        SCREEN_STATE
+    }
+
+    val screenState =
+        savedStateHandle.getStateFlow(SharedParamsNames.SCREEN_STATE.name, ScreenState())
 
     init {
         getMovie(actionDispatcher.sharedParameters.recordId)
     }
 
-    var screenState by mutableStateOf(ScreenState())
-        private set
-
-    fun getMovie(id: String) = viewModelScope.launch(projectDispatchers.ioDispatcher) {
+    private fun getMovie(id: String) = viewModelScope.launch(projectDispatchers.ioDispatcher) {
         openApiRepository.getMovie(id).onSuccess { record ->
             record?.let {
-                screenState = it.toScreenState()
-                searchInfoAboutMovie(screenState.movieTitle)
+                savedStateHandle[SharedParamsNames.SCREEN_STATE.name] = it.toScreenState()
+                searchInfoAboutMovie(record.title)
             }
         }.onFailure {
             Log.d("aaa", "getMovie: isFailure ${it.message}")
@@ -75,7 +82,8 @@ class DetailsScreenViewModel(
                 if (listOfMovies.isNotEmpty()) {
                     listOfMovies.forEach { movie ->
                         if (movie.title?.uppercase() == title.uppercase()) {
-                            screenState = screenState.copy(infoAboutMovie = movie)
+                            savedStateHandle[SharedParamsNames.SCREEN_STATE.name] =
+                                screenState.value.copy(infoAboutMovie = movie)
                         }
                     }
                 }

@@ -16,7 +16,6 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 
-
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class ListScreenViewModelTest {
 
@@ -60,7 +59,6 @@ internal class ListScreenViewModelTest {
             actionDispatcher,
             projectDispatchers
         )
-
 
         advanceUntilIdle()
     }

@@ -1,7 +1,10 @@
 package com.eziosoft.parisinnumbers.domain
 
+import android.os.Parcelable
 import com.eziosoft.parisinnumbers.data.remote.theMovieDb.models.MovieResult
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class TheMovieDbResult(
     val adult: Boolean,
     val backdrop_path: String?,
@@ -17,7 +20,7 @@ data class TheMovieDbResult(
     val video: Boolean,
     val vote_average: Double,
     val vote_count: Int
-)
+) : Parcelable
 
 fun MovieResult.toTheMovieDBResult() =
     TheMovieDbResult(

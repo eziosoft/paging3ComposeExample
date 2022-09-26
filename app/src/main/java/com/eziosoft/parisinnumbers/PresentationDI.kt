@@ -1,5 +1,6 @@
 package com.eziosoft.parisinnumbers
 
+import androidx.lifecycle.SavedStateHandle
 import com.eziosoft.parisinnumbers.presentation.ProjectDispatchers
 import com.eziosoft.parisinnumbers.presentation.ui.detailsScreen.DetailsScreenViewModel
 import com.eziosoft.parisinnumbers.presentation.ui.listScreen.ListScreenViewModel
@@ -12,8 +13,9 @@ val presentationModule = module {
         ListScreenViewModel(repository = get(), get(), get(), get())
     }
 
-    viewModel {
+    viewModel { (savedStateHandle: SavedStateHandle) ->
         DetailsScreenViewModel(
+            savedStateHandle = savedStateHandle,
             openApiRepository = get(),
             actionDispatcher = get(),
             movieDbRepository = get(),

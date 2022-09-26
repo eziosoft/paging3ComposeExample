@@ -17,20 +17,21 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
 import coil.compose.AsyncImage
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.getStateViewModel
 
 @Composable
 fun DetailsScreen() {
-    val viewModel = getViewModel<DetailsScreenViewModel>()
-    val screenState = viewModel.screenState
+    val viewModel = getStateViewModel<DetailsScreenViewModel>()
+    val screenState = viewModel.screenState.collectAsState()
     val context = LocalContext.current
 
-    Content(screenState, context, viewModel)
+    Content(screenState.value, context, viewModel)
 }
 
 @Composable
