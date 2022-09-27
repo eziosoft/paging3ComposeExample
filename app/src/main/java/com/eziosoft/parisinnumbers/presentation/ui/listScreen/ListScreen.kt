@@ -29,18 +29,23 @@ import com.eziosoft.parisinnumbers.domain.Movie
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun ListScreen() {
+fun ListScreen(modifier: Modifier = Modifier.fillMaxSize()) {
     val viewModel = getViewModel<ListScreenViewModel>()
     val movies = viewModel.getMovies().collectAsLazyPagingItems()
     val listState: LazyListState = rememberLazyListState()
 
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier
     ) {
         Column {
-            Search(onSearch = {
-                viewModel.search(it)
-            })
+            Search(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
+                onSearch = {
+                    viewModel.search(it)
+                }
+            )
 
             LazyColumn(
                 modifier = Modifier
@@ -61,7 +66,6 @@ private fun ListItem(
     viewModel: ListScreenViewModel,
     record: Movie
 ) {
-
     var posterUrl by remember {
         mutableStateOf("")
     }
@@ -94,7 +98,7 @@ private fun ListItem(
                 contentDescription = "",
                 modifier = Modifier
                     .height(100.dp)
-                    .clip(RoundedCornerShape(10.dp)),
+                    .clip(RoundedCornerShape(10.dp))
             )
         }
     }
@@ -102,16 +106,17 @@ private fun ListItem(
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun Search(onSearch: (String) -> Unit) {
+fun Search(
+    onSearch: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
     var text by rememberSaveable() {
         mutableStateOf("")
     }
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp)
+        modifier = modifier
     ) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             OutlinedTextField(
@@ -131,12 +136,10 @@ fun Search(onSearch: (String) -> Unit) {
                     onSearch(text)
                 },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Default),
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        onSearch(text)
-                        keyboardController?.hide()
-                    }
-                )
+                keyboardActions = KeyboardActions(onDone = {
+                    onSearch(text)
+                    keyboardController?.hide()
+                })
             )
         }
     }

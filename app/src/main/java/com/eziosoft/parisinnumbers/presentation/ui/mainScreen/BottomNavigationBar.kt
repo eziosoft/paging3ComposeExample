@@ -19,21 +19,21 @@ import com.eziosoft.parisinnumbers.presentation.ui.theme.PrimaryLight
 data class BottomNavItem(
     val name: String,
     val route: String,
-    val icon: ImageVector,
+    val icon: ImageVector
 )
 
 @Composable
 fun BottomNavigationBar(
-    modifier: Modifier = Modifier,
     navController: NavHostController,
     itemsList: List<BottomNavItem>,
+    modifier: Modifier = Modifier,
     onItemClick: (BottomNavItem) -> Unit
 ) {
     val backStackEntry = navController.currentBackStackEntryAsState()
 
     BottomNavigation(
         modifier = modifier,
-        elevation = 5.dp,
+        elevation = 5.dp
 
     ) {
         itemsList.forEach { item ->

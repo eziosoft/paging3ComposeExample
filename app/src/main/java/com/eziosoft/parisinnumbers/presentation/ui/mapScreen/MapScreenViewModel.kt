@@ -1,10 +1,10 @@
 package com.eziosoft.parisinnumbers.presentation.ui.mapScreen
 
 import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eziosoft.parisinnumbers.domain.OpenApiRepository
-import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
 import com.eziosoft.parisinnumbers.presentation.ProjectDispatchers
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.heatmaps.HeatmapTileProvider
@@ -22,8 +22,7 @@ data class ScreenState(
 
 class MapScreenViewModel(
     private val repository: OpenApiRepository,
-    private val actionDispatcher: ActionDispatcher,
-    private val projectDispatchers: ProjectDispatchers
+    projectDispatchers: ProjectDispatchers
 ) : ViewModel() {
 
     var screenState by mutableStateOf(ScreenState())

@@ -1,6 +1,5 @@
 package com.eziosoft.parisinnumbers
 
-import org.junit.Assert.*
 import org.junit.Test
 import java.net.URL
 import java.net.URLDecoder
@@ -13,14 +12,13 @@ import java.net.URLDecoder
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
-
         val link = "https://opendata.paris.fr/api/v2/catalog/datasets/lieux-de-tournage-a-paris/records?limit=1&offset=1&include_app_metas=False"
 
-        val currentPage = splitQuery(URL(link))?.get("offset")?.toInt()
+        val currentPage = splitQuery(URL(link))["offset"]?.toInt()
         println(currentPage)
     }
 
-    fun splitQuery(url: URL): Map<String, String>? {
+    fun splitQuery(url: URL): Map<String, String> {
         val query_pairs: MutableMap<String, String> = LinkedHashMap()
         val query = url.query
         val pairs = query.split("&").toTypedArray()

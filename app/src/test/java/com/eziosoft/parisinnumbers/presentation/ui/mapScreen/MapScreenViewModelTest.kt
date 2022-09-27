@@ -1,11 +1,8 @@
 package com.eziosoft.parisinnumbers.presentation.ui.mapScreen
 
-import androidx.compose.ui.graphics.Color
 import com.eziosoft.parisinnumbers.MainCoroutineRule
 import com.eziosoft.parisinnumbers.domain.Movie
 import com.eziosoft.parisinnumbers.domain.OpenApiRepository
-import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
-import com.eziosoft.parisinnumbers.navigation.SharedParameters
 import com.eziosoft.parisinnumbers.presentation.ProjectDispatchers
 import com.google.android.gms.maps.model.LatLng
 import io.mockk.coEvery
@@ -48,7 +45,7 @@ internal class MapScreenViewModelTest {
     private val openApiRepository: OpenApiRepository = mockk {
         coEvery { getAllMovies() } returns Result.success(movieList)
     }
-    private val actionDispatcher: ActionDispatcher = ActionDispatcher(SharedParameters())
+//    private val actionDispatcher: ActionDispatcher = ActionDispatcher(SharedParameters())
     private val projectDispatchers = ProjectDispatchers(
         mainDispatcher = Dispatchers.Main,
         ioDispatcher = Dispatchers.Main
@@ -60,7 +57,6 @@ internal class MapScreenViewModelTest {
 
         val viewModel = MapScreenViewModel(
             repository = openApiRepository,
-            actionDispatcher = actionDispatcher,
             projectDispatchers = projectDispatchers
         )
 

@@ -30,8 +30,8 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun NavigationComponent(
-    modifier: Modifier = Modifier,
-    actionDispatcher: ActionDispatcher
+    actionDispatcher: ActionDispatcher,
+    modifier: Modifier = Modifier
 ) {
     val navController: NavHostController = rememberNavController()
     val startDestination: String = Destination.LIST_SCREEN.name

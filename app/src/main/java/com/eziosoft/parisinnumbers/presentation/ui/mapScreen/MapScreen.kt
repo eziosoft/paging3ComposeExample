@@ -16,7 +16,7 @@ private val PARIS_POSITION = LatLng(48.8566, 2.3522)
 
 @OptIn(MapsComposeExperimentalApi::class)
 @Composable
-fun MapScreen() {
+fun MapScreen(modifier: Modifier = Modifier.fillMaxSize()) {
     val context = LocalContext.current
 
     val viewModel: MapScreenViewModel = getViewModel()
@@ -46,7 +46,7 @@ fun MapScreen() {
         }
     }
 
-    Box(Modifier.fillMaxSize()) {
+    Box(modifier) {
         GoogleMap(
             modifier = Modifier.matchParentSize(),
             uiSettings = uiSettings,
@@ -59,7 +59,6 @@ fun MapScreen() {
                 clusterManager?.let { clusterManager ->
                     clusterManager.setAnimation(false)
                     googleMap.setOnCameraIdleListener(clusterManager)
-                    googleMap.setOnMarkerClickListener(clusterManager)
                     clusterManager.addItems(markers.map { ClusterMarker(it.position, "", "") })
                 }
             }

@@ -1,6 +1,9 @@
 package com.eziosoft.parisinnumbers.data.remote
 
-import androidx.paging.*
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.map
 import com.eziosoft.parisinnumbers.data.remote.OpenAPI.Datasets
 import com.eziosoft.parisinnumbers.data.remote.OpenAPI.MoviesAPI
 import com.eziosoft.parisinnumbers.data.remote.OpenAPI.PAGE_SIZE

@@ -51,7 +51,7 @@ class DetailsScreenViewModel(
     private val openApiRepository: OpenApiRepository,
     private val movieDbRepository: TheMovieDbRepository,
     val actionDispatcher: ActionDispatcher,
-    private val projectDispatchers: ProjectDispatchers,
+    private val projectDispatchers: ProjectDispatchers
 ) : ViewModel() {
 
     enum class SharedParamsNames {
