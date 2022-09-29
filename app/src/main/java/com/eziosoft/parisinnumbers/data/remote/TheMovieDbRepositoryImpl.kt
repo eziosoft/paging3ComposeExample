@@ -6,9 +6,9 @@ import com.eziosoft.parisinnumbers.domain.TheMovieDbRepository
 import com.eziosoft.parisinnumbers.domain.TheMovieDbResult
 import com.eziosoft.parisinnumbers.domain.toTheMovieDBResult
 
-class TheMovieDbRepositoryImpl(private val api: TheMovieDb) : TheMovieDbRepository {
+class TheMovieDbRepositoryImpl(private val api: TheMovieDb, private val apiKey: String) : TheMovieDbRepository {
 
-    override suspend fun search(query: String, apiKey: String): Result<List<TheMovieDbResult>?> {
+    override suspend fun search(query: String): Result<List<TheMovieDbResult>?> {
         val response = api.search(apiKey, query)
 
         return if (response.isSuccessful) {

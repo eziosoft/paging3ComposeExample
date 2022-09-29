@@ -1,5 +1,6 @@
 package com.eziosoft.parisinnumbers.data
 
+import com.eziosoft.parisinnumbers.R
 import com.eziosoft.parisinnumbers.data.remote.OpenAPI.MoviesAPI
 import com.eziosoft.parisinnumbers.data.remote.OpenApiImpl
 import com.eziosoft.parisinnumbers.data.remote.TheMovieDbRepositoryImpl
@@ -52,6 +53,9 @@ val dataModule = module {
     }
 
     single<TheMovieDbRepository> {
-        TheMovieDbRepositoryImpl(api = get())
+        TheMovieDbRepositoryImpl(
+            api = get(),
+            androidContext().resources.getString(R.string.THE_MOVIES_DB_KEY)
+        )
     }
 }

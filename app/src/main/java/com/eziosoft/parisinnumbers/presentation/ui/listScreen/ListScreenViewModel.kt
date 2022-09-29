@@ -48,7 +48,7 @@ class ListScreenViewModel(
 
     fun searchInfoAboutMovie(title: String, callback: (posterUrl: String) -> Unit) =
         viewModelScope.launch(projectDispatchers.ioDispatcher) {
-            movieDbRepository.search(title, "4582c6d7dbd578f026ba7614d760d566").onSuccess { list ->
+            movieDbRepository.search(title).onSuccess { list ->
                 list?.let { listOfMovies ->
                     if (listOfMovies.isNotEmpty()) {
                         listOfMovies.forEach { movie ->

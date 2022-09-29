@@ -29,7 +29,7 @@ import com.eziosoft.parisinnumbers.domain.Movie
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun ListScreen(modifier: Modifier = Modifier.fillMaxSize()) {
+fun ListScreen(modifier: Modifier = Modifier) {
     val viewModel = getViewModel<ListScreenViewModel>()
     val movies = viewModel.getMovies().collectAsLazyPagingItems()
     val listState: LazyListState = rememberLazyListState()
@@ -107,8 +107,8 @@ private fun ListItem(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun Search(
-    onSearch: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onSearch: (String) -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 

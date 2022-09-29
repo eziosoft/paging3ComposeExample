@@ -1,7 +1,6 @@
 package com.eziosoft.parisinnumbers.presentation.ui.mapScreen
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -16,7 +15,7 @@ private val PARIS_POSITION = LatLng(48.8566, 2.3522)
 
 @OptIn(MapsComposeExperimentalApi::class)
 @Composable
-fun MapScreen(modifier: Modifier = Modifier.fillMaxSize()) {
+fun MapScreen(modifier: Modifier = Modifier) {
     val context = LocalContext.current
 
     val viewModel: MapScreenViewModel = getViewModel()
@@ -38,7 +37,7 @@ fun MapScreen(modifier: Modifier = Modifier.fillMaxSize()) {
 
     LaunchedEffect(key1 = viewModel.screenState) {
         viewModel.screenState.let { screenState ->
-            markers = screenState.markerList.map { ClusterMarker(it.position, it.name, it.name) }
+            markers = screenState.mapMarkerList.map { ClusterMarker(it.position, it.name, it.name) }
 
             screenState.heatmapTileProvider?.let {
                 heatmapTileProvider = it

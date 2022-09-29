@@ -45,6 +45,7 @@ internal class MapScreenViewModelTest {
     private val openApiRepository: OpenApiRepository = mockk {
         coEvery { getAllMovies() } returns Result.success(movieList)
     }
+
 //    private val actionDispatcher: ActionDispatcher = ActionDispatcher(SharedParameters())
     private val projectDispatchers = ProjectDispatchers(
         mainDispatcher = Dispatchers.Main,
@@ -61,9 +62,9 @@ internal class MapScreenViewModelTest {
         )
 
         advanceUntilIdle()
-        val actualState = viewModel.screenState.markerList
+        val actualState = viewModel.screenState.mapMarkerList
         val expectedState = movieList.map {
-            Marker(LatLng(it.lat, it.lon), name = it.title)
+            MapMarker(LatLng(it.lat, it.lon), name = it.title)
         }
         assertEquals(expectedState, actualState)
     }

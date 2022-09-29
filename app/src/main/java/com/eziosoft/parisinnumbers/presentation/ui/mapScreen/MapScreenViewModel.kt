@@ -10,13 +10,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.heatmaps.HeatmapTileProvider
 import kotlinx.coroutines.launch
 
-data class Marker(
-    val position: LatLng,
-    val name: String
-)
-
 data class ScreenState(
-    val markerList: List<Marker> = emptyList(),
+    val mapMarkerList: List<MapMarker> = emptyList(),
     val heatmapTileProvider: HeatmapTileProvider? = null
 )
 
@@ -34,14 +29,14 @@ class MapScreenViewModel(
 
             allMovies.onSuccess { movies ->
                 movies?.let {
-                    val allMarkers = movies.map { Marker(LatLng(it.lat, it.lon), name = it.title) }
+                    val allMapMarkers = movies.map { MapMarker(LatLng(it.lat, it.lon), name = it.title) }
 
                     val heatMapProvider = HeatmapTileProvider.Builder()
-                        .data(allMarkers.map { it.position })
+                        .data(allMapMarkers.map { it.position })
                         .build()
 
                     screenState = screenState.copy(
-                        markerList = allMarkers,
+                        mapMarkerList = allMapMarkers,
                         heatmapTileProvider = heatMapProvider
                     )
                 }
