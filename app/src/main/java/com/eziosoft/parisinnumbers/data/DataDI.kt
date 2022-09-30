@@ -1,12 +1,12 @@
 package com.eziosoft.parisinnumbers.data
 
 import com.eziosoft.parisinnumbers.R
-import com.eziosoft.parisinnumbers.data.remote.OpenAPI.MoviesAPI
-import com.eziosoft.parisinnumbers.data.remote.OpenApiImpl
+import com.eziosoft.parisinnumbers.data.remote.OpenApiRepositoryImpl
 import com.eziosoft.parisinnumbers.data.remote.TheMovieDbRepositoryImpl
+import com.eziosoft.parisinnumbers.data.remote.openApi.MoviesAPI
 import com.eziosoft.parisinnumbers.data.remote.theMovieDb.TheMovieDb
-import com.eziosoft.parisinnumbers.domain.OpenApiRepository
-import com.eziosoft.parisinnumbers.domain.TheMovieDbRepository
+import com.eziosoft.parisinnumbers.domain.repository.OpenApiRepository
+import com.eziosoft.parisinnumbers.domain.repository.TheMovieDbRepository
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -17,7 +17,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 
 val dataModule = module {
-
     single<OkHttpClient> {
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.NONE
@@ -40,7 +39,7 @@ val dataModule = module {
     }
 
     single<OpenApiRepository> {
-        OpenApiImpl(get())
+        OpenApiRepositoryImpl(get())
     }
 
     single<TheMovieDb> {

@@ -5,8 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.eziosoft.parisinnumbers.domain.OpenApiRepository
-import com.eziosoft.parisinnumbers.domain.TheMovieDbRepository
+import com.eziosoft.parisinnumbers.domain.repository.OpenApiRepository
+import com.eziosoft.parisinnumbers.domain.repository.TheMovieDbRepository
 import com.eziosoft.parisinnumbers.navigation.Action
 import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
 import com.eziosoft.parisinnumbers.navigation.Destination

@@ -2,8 +2,8 @@ package com.eziosoft.parisinnumbers.presentation.ui.listScreen
 
 import com.eziosoft.parisinnumbers.MainCoroutineRule
 import com.eziosoft.parisinnumbers.domain.Movie
-import com.eziosoft.parisinnumbers.domain.OpenApiRepository
-import com.eziosoft.parisinnumbers.domain.TheMovieDbRepository
+import com.eziosoft.parisinnumbers.domain.repository.OpenApiRepository
+import com.eziosoft.parisinnumbers.domain.repository.TheMovieDbRepository
 import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
 import com.eziosoft.parisinnumbers.navigation.SharedParameters
 import com.eziosoft.parisinnumbers.presentation.ProjectDispatchers
@@ -43,7 +43,7 @@ internal class ListScreenViewModelTest {
     }
 
     private val movieDbRepo: TheMovieDbRepository = mockk {
-        coEvery { search(any(), any()) } returns Result.success(emptyList())
+        coEvery { search(any()) } returns Result.success(emptyList())
     }
     private val actionDispatcher: ActionDispatcher = ActionDispatcher(SharedParameters())
     private val projectDispatchers = ProjectDispatchers(

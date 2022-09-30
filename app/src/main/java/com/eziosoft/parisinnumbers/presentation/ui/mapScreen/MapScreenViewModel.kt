@@ -4,7 +4,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.eziosoft.parisinnumbers.domain.OpenApiRepository
+import com.eziosoft.parisinnumbers.domain.repository.OpenApiRepository
 import com.eziosoft.parisinnumbers.presentation.ProjectDispatchers
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.heatmaps.HeatmapTileProvider

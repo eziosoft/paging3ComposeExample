@@ -2,7 +2,7 @@ package com.eziosoft.parisinnumbers.presentation.ui.mapScreen
 
 import com.eziosoft.parisinnumbers.MainCoroutineRule
 import com.eziosoft.parisinnumbers.domain.Movie
-import com.eziosoft.parisinnumbers.domain.OpenApiRepository
+import com.eziosoft.parisinnumbers.domain.repository.OpenApiRepository
 import com.eziosoft.parisinnumbers.presentation.ProjectDispatchers
 import com.google.android.gms.maps.model.LatLng
 import io.mockk.coEvery
