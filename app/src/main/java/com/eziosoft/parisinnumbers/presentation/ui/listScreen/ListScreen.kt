@@ -22,8 +22,6 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
 import coil.compose.AsyncImage
 import com.eziosoft.parisinnumbers.domain.Movie
 import org.koin.androidx.compose.getViewModel
@@ -31,7 +29,7 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 fun ListScreen(modifier: Modifier = Modifier) {
     val viewModel = getViewModel<ListScreenViewModel>()
-    val movies = viewModel.getMovies().collectAsLazyPagingItems()
+    val state = viewModel.state
     val listState: LazyListState = rememberLazyListState()
 
     Box(
@@ -53,8 +51,27 @@ fun ListScreen(modifier: Modifier = Modifier) {
                     .padding(horizontal = 4.dp),
                 state = listState
             ) {
-                items(movies) { item ->
-                    item?.let { ListItem(viewModel, it) }
+                Log.d("aaa", "ListScreen: ${state.items.size}")
+                items(state.items.size) { i ->
+                    if (i >= state.items.size - 1 &&
+                        !state.endReached &&
+                        !state.isLoading
+                    ) {
+                        viewModel.loadNextItems()
+                    }
+                    val item = state.items[i]
+                    ListItem(viewModel, item)
+                }
+                item {
+                    if (state.isLoading) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp)
+                        ) {
+                            CircularProgressIndicator()
+                        }
+                    }
                 }
             }
         }
