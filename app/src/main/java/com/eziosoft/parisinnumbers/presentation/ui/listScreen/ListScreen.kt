@@ -22,6 +22,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.eziosoft.parisinnumbers.domain.Movie
 import org.koin.androidx.compose.getViewModel
@@ -81,7 +82,7 @@ fun ListScreen(modifier: Modifier = Modifier) {
 @Composable
 private fun ListItem(
     viewModel: ListScreenViewModel,
-    record: Movie
+    record: MovieTitle
 ) {
     var posterUrl by remember {
         mutableStateOf("")
@@ -97,7 +98,7 @@ private fun ListItem(
     Card(
         modifier = Modifier
             .clickable {
-                viewModel.navigateToDetails(recordId = record.id)
+//                viewModel.navigateToDetails(recordId = record.id)
             }
             .fillMaxWidth()
             .padding(4.dp),
@@ -105,10 +106,8 @@ private fun ListItem(
         shape = RoundedCornerShape(10.dp)
     ) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Column(modifier = Modifier.padding(8.dp)) {
-                Text(text = record.title, fontWeight = FontWeight.Bold)
-                Text(text = "${record.startDate} - ${record.endDate}")
-                Text(text = record.address)
+            Column(modifier = Modifier.padding(8.dp), verticalArrangement = Arrangement.Center) {
+                Text(text = record.title, fontWeight = FontWeight.Bold, fontSize = 15.sp)
             }
             AsyncImage(
                 model = posterUrl,

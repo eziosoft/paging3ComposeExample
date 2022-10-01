@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.eziosoft.parisinnumbers.data.DefaultPaginator
 import com.eziosoft.parisinnumbers.data.remote.openApi.PAGE_SIZE
 import com.eziosoft.parisinnumbers.data.remote.openApi.models.records.MoviesPage
+import com.eziosoft.parisinnumbers.data.remote.openApi.models.titles.MovieTitles
 import com.eziosoft.parisinnumbers.data.toMovie
 import com.eziosoft.parisinnumbers.domain.repository.OpenApiRepository
 import com.eziosoft.parisinnumbers.domain.repository.TheMovieDbRepository
@@ -16,10 +17,12 @@ import com.eziosoft.parisinnumbers.navigation.Action
 import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
 import com.eziosoft.parisinnumbers.navigation.Destination
 import com.eziosoft.parisinnumbers.presentation.ProjectDispatchers
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.net.URL
 import java.net.URLDecoder
 
@@ -36,22 +39,25 @@ class ListScreenViewModel(
     private val searchFlow = MutableStateFlow("")
     private var searchString = ""
 
-    private val paginator = DefaultPaginator<Int, MoviesPage>(
+    private val paginator = DefaultPaginator<Int, MovieTitles>(
         initialPageIndex = state.page,
         onLoadingStatusChangeListener = {
             state = state.copy(isLoading = it)
         },
         onRequest = { nextPage ->
-            repository.getPage(nextPage, searchString, PAGE_SIZE)
+            withContext(projectDispatchers.ioDispatcher) {
+                repository.getTitles(nextPage, searchString, PAGE_SIZE)
+            }
         },
         getNextPageIndex = {
-            getNextPageIndex(it)
+            state.items.size
+//            getNextPageIndex(it)
         },
         onError = {
             state = state.copy(error = it?.message)
         },
         onSuccess = { newPage, newKey ->
-            val listOfMovies = newPage.records.map { it.record.toMovie() }
+            val listOfMovies = newPage.records.map { MovieTitle(it.record.fields.nom_tournage) }
             state = state.copy(
                 items = state.items + listOfMovies,
                 page = newKey,
@@ -127,7 +133,7 @@ class ListScreenViewModel(
         return queryPairs
     }
 
-    private fun getNextPageIndex(page: MoviesPage) =
+    private fun getNextPageIndex(page: MovieTitles) =
         splitQuery(URL(page.links.find { it.rel == "next" }?.href))["offset"]
             ?.toInt() ?: 0
 }

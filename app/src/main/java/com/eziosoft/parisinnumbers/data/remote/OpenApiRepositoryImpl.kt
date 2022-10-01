@@ -4,6 +4,7 @@ import com.eziosoft.parisinnumbers.data.remote.openApi.MoviesAPI
 import com.eziosoft.parisinnumbers.data.remote.openApi.OpenApiDataset
 import com.eziosoft.parisinnumbers.data.remote.openApi.PAGE_SIZE
 import com.eziosoft.parisinnumbers.data.remote.openApi.models.records.MoviesPage
+import com.eziosoft.parisinnumbers.data.remote.openApi.models.titles.MovieTitles
 import com.eziosoft.parisinnumbers.data.toMovie
 import com.eziosoft.parisinnumbers.data.toResult
 import com.eziosoft.parisinnumbers.domain.Movie
@@ -40,6 +41,23 @@ class OpenApiRepositoryImpl(private val api: MoviesAPI) : OpenApiRepository {
             where = if (searchQuery.isEmpty()) null else "nom_tournage like \"$searchQuery\"",
             orderBy = "date_debut desc",
             groupBy = null
+        )
+
+        return response.toResult()
+    }
+
+    override suspend fun getTitles(
+        pageNumber: Int,
+        searchQuery: String,
+        pageSize: Int
+    ): Result<MovieTitles> {
+        val response = api.getMovieTitlesPage(
+            dataset = OpenApiDataset.MOVIES.title,
+            pageStartItem = pageNumber,
+            pageSize = PAGE_SIZE,
+            where = if (searchQuery.isEmpty()) null else "nom_tournage like \"$searchQuery\"",
+            orderBy = null,
+            groupBy = "nom_tournage"
         )
 
         return response.toResult()
