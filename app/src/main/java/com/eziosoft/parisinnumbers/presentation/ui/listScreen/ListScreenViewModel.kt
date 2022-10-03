@@ -8,16 +8,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eziosoft.parisinnumbers.data.DefaultPaginator
 import com.eziosoft.parisinnumbers.data.remote.openApi.PAGE_SIZE
-import com.eziosoft.parisinnumbers.data.remote.openApi.models.records.MoviesPage
 import com.eziosoft.parisinnumbers.data.remote.openApi.models.titles.MovieTitles
-import com.eziosoft.parisinnumbers.data.toMovie
 import com.eziosoft.parisinnumbers.domain.repository.OpenApiRepository
 import com.eziosoft.parisinnumbers.domain.repository.TheMovieDbRepository
 import com.eziosoft.parisinnumbers.navigation.Action
 import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
 import com.eziosoft.parisinnumbers.navigation.Destination
 import com.eziosoft.parisinnumbers.presentation.ProjectDispatchers
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
@@ -50,7 +47,7 @@ class ListScreenViewModel(
             }
         },
         getNextPageIndex = {
-            state.items.size
+            state.items.size + 1
 //            getNextPageIndex(it)
         },
         onError = {
@@ -61,7 +58,7 @@ class ListScreenViewModel(
             state = state.copy(
                 items = state.items + listOfMovies,
                 page = newKey,
-                endReached = newPage.records.isEmpty()
+                endReached = newPage.records.isEmpty() //|| newPage.records.size < PAGE_SIZE
             )
         }
     )
@@ -114,9 +111,9 @@ class ListScreenViewModel(
             }
         }
 
-    fun navigateToDetails(recordId: String) {
+    fun navigateToDetails(movieTitle: String) {
         viewModelScope.launch(projectDispatchers.mainDispatcher) {
-            actionDispatcher.sharedParameters.recordId = recordId
+            actionDispatcher.sharedParameters.selectedMovieTitle = movieTitle
             actionDispatcher.dispatchAction(Action.Navigate(Destination.DETAILS_SCREEN))
         }
     }

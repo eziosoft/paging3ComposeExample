@@ -1,37 +1,39 @@
 package com.eziosoft.parisinnumbers.presentation.ui.listScreen
 
 import android.util.Log
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.LinearProgressIndicator
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
-import com.eziosoft.parisinnumbers.domain.Movie
 import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun ListScreen(modifier: Modifier = Modifier) {
     val viewModel = getViewModel<ListScreenViewModel>()
     val state = viewModel.state
-    val listState: LazyListState = rememberLazyListState()
+    val listState: LazyGridState = rememberLazyGridState()
 
     Box(
         modifier = modifier
@@ -46,13 +48,16 @@ fun ListScreen(modifier: Modifier = Modifier) {
                 }
             )
 
-            LazyColumn(
+            LazyVerticalGrid(
+
+                columns = GridCells.Fixed(2),
+                contentPadding = PaddingValues(16.dp),
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 4.dp),
+                    .fillMaxSize(),
+//                    .padding(horizontal = 4.dp),
+
                 state = listState
             ) {
-                Log.d("aaa", "ListScreen: ${state.items.size}")
                 items(state.items.size) { i ->
                     if (i >= state.items.size - 1 &&
                         !state.endReached &&
@@ -68,9 +73,10 @@ fun ListScreen(modifier: Modifier = Modifier) {
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(8.dp)
+                                .padding(8.dp),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            CircularProgressIndicator()
+                            LinearProgressIndicator()
                         }
                     }
                 }
@@ -79,46 +85,7 @@ fun ListScreen(modifier: Modifier = Modifier) {
     }
 }
 
-@Composable
-private fun ListItem(
-    viewModel: ListScreenViewModel,
-    record: MovieTitle
-) {
-    var posterUrl by remember {
-        mutableStateOf("")
-    }
 
-    LaunchedEffect(key1 = true) {
-        viewModel.searchInfoAboutMovie(record.title) {
-            posterUrl = it
-        }
-        Log.d("aaaa", "ListItem: LaunchEffect")
-    }
-
-    Card(
-        modifier = Modifier
-            .clickable {
-//                viewModel.navigateToDetails(recordId = record.id)
-            }
-            .fillMaxWidth()
-            .padding(4.dp),
-        elevation = 5.dp,
-        shape = RoundedCornerShape(10.dp)
-    ) {
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Column(modifier = Modifier.padding(8.dp), verticalArrangement = Arrangement.Center) {
-                Text(text = record.title, fontWeight = FontWeight.Bold, fontSize = 15.sp)
-            }
-            AsyncImage(
-                model = posterUrl,
-                contentDescription = "",
-                modifier = Modifier
-                    .height(100.dp)
-                    .clip(RoundedCornerShape(10.dp))
-            )
-        }
-    }
-}
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable

@@ -30,7 +30,7 @@ class DetailsScreenViewModel(
         savedStateHandle.getStateFlow(SharedParamsNames.SCREEN_STATE.name, ScreenState())
 
     init {
-        getMovie(actionDispatcher.sharedParameters.recordId)
+        getMovie(actionDispatcher.sharedParameters.selectedMovieTitle)
     }
 
     private fun getMovie(id: String) = viewModelScope.launch(projectDispatchers.ioDispatcher) {

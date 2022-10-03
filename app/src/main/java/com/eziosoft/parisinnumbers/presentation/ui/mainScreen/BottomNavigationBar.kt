@@ -41,8 +41,8 @@ fun BottomNavigationBar(
                     }
                 },
                 selected = selected,
-                selectedContentColor = PrimaryLight,
-                unselectedContentColor = Accent,
+                selectedContentColor = Accent,
+                unselectedContentColor = PrimaryLight,
                 onClick = { onItemClick(item) }
             )
         }

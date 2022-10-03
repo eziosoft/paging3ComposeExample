@@ -19,7 +19,7 @@ import java.io.File
 val dataModule = module {
     single<OkHttpClient> {
         val interceptor = HttpLoggingInterceptor()
-        interceptor.level = HttpLoggingInterceptor.Level.NONE
+        interceptor.level = HttpLoggingInterceptor.Level.BODY
 
         OkHttpClient.Builder().cache(
             Cache(
