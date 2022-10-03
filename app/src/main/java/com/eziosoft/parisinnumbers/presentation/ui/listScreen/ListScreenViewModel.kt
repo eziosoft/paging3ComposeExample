@@ -8,8 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eziosoft.parisinnumbers.data.DefaultPaginator
 import com.eziosoft.parisinnumbers.data.remote.openApi.PAGE_SIZE
-import com.eziosoft.parisinnumbers.data.remote.openApi.models.titles.MovieTitles
-import com.eziosoft.parisinnumbers.domain.repository.OpenApiRepository
+import com.eziosoft.parisinnumbers.domain.Movie
+import com.eziosoft.parisinnumbers.domain.repository.DatabaseRepository
 import com.eziosoft.parisinnumbers.domain.repository.TheMovieDbRepository
 import com.eziosoft.parisinnumbers.navigation.Action
 import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
@@ -20,11 +20,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.net.URL
-import java.net.URLDecoder
 
 class ListScreenViewModel(
-    private val repository: OpenApiRepository,
+    private val dbRepository: DatabaseRepository,
     private val movieDbRepository: TheMovieDbRepository,
     private val actionDispatcher: ActionDispatcher,
     private val projectDispatchers: ProjectDispatchers
@@ -36,36 +34,33 @@ class ListScreenViewModel(
     private val searchFlow = MutableStateFlow("")
     private var searchString = ""
 
-    private val paginator = DefaultPaginator<Int, MovieTitles>(
+    private val paginator = DefaultPaginator<Int, List<Movie>>(
         initialPageIndex = state.page,
         onLoadingStatusChangeListener = {
             state = state.copy(isLoading = it)
         },
         onRequest = { nextPage ->
             withContext(projectDispatchers.ioDispatcher) {
-                repository.getTitles(nextPage, searchString, PAGE_SIZE)
+                Result.success(dbRepository.getPaged(nextPage, PAGE_SIZE, searchString))
             }
         },
         getNextPageIndex = {
             state.items.size + 1
-//            getNextPageIndex(it)
         },
         onError = {
             state = state.copy(error = it?.message)
         },
         onSuccess = { newPage, newKey ->
-            val listOfMovies = newPage.records.map { MovieTitle(it.record.fields.nom_tournage) }
             state = state.copy(
-                items = state.items + listOfMovies,
+                items = state.items + newPage,
                 page = newKey,
-                endReached = newPage.records.isEmpty() //|| newPage.records.size < PAGE_SIZE
+                endReached = newPage.isEmpty()
             )
         }
     )
 
     init {
         observeSearch()
-        loadNextItems()
     }
 
     fun loadNextItems() {
@@ -84,12 +79,10 @@ class ListScreenViewModel(
     private fun observeSearch() {
         viewModelScope.launch(projectDispatchers.mainDispatcher) {
             searchFlow.debounce(1500).collect {
-                if (it.isNotEmpty()) {
-                    searchString = it
-                    paginator.reset()
-                    state = state.copy(items = emptyList())
-                    paginator.loadNextPage()
-                }
+                searchString = it.trim()
+                paginator.reset()
+                state = state.copy(items = emptyList())
+                paginator.loadNextPage()
             }
         }
     }
@@ -117,20 +110,4 @@ class ListScreenViewModel(
             actionDispatcher.dispatchAction(Action.Navigate(Destination.DETAILS_SCREEN))
         }
     }
-
-    private fun splitQuery(url: URL): Map<String, String> {
-        val queryPairs: MutableMap<String, String> = LinkedHashMap()
-        val query = url.query
-        val pairs = query.split("&").toTypedArray()
-        for (pair in pairs) {
-            val idx = pair.indexOf("=")
-            queryPairs[URLDecoder.decode(pair.substring(0, idx), "UTF-8")] =
-                URLDecoder.decode(pair.substring(idx + 1), "UTF-8")
-        }
-        return queryPairs
-    }
-
-    private fun getNextPageIndex(page: MovieTitles) =
-        splitQuery(URL(page.links.find { it.rel == "next" }?.href))["offset"]
-            ?.toInt() ?: 0
 }

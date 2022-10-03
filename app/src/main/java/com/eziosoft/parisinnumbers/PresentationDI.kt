@@ -10,13 +10,12 @@ import org.koin.dsl.module
 
 val presentationModule = module {
     viewModel {
-        ListScreenViewModel(repository = get(), get(), get(), get())
+        ListScreenViewModel(get(), get(), get(), get())
     }
 
     viewModel { (savedStateHandle: SavedStateHandle) ->
         DetailsScreenViewModel(
             savedStateHandle = savedStateHandle,
-            openApiRepository = get(),
             actionDispatcher = get(),
             movieDbRepository = get(),
             projectDispatchers = get()

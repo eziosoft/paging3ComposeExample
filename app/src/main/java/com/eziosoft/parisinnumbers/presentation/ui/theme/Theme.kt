@@ -2,11 +2,9 @@ package com.eziosoft.parisinnumbers.presentation.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-
 
 private val ColorPalette = lightColors(
     primary = Primary,
@@ -16,7 +14,8 @@ private val ColorPalette = lightColors(
     onPrimary = Color.White,
     onSecondary = Color.White,
     onBackground = Color.White,
-    onSurface = Color.White
+    onSurface = Color.White,
+    surface = Color.Transparent
 
     /* Other default colors to override
     background = Color.White,

@@ -5,7 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.eziosoft.parisinnumbers.domain.repository.OpenApiRepository
 import com.eziosoft.parisinnumbers.domain.repository.TheMovieDbRepository
 import com.eziosoft.parisinnumbers.navigation.Action
 import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
@@ -16,7 +15,6 @@ import kotlinx.coroutines.launch
 
 class DetailsScreenViewModel(
     private val savedStateHandle: SavedStateHandle,
-    private val openApiRepository: OpenApiRepository,
     private val movieDbRepository: TheMovieDbRepository,
     val actionDispatcher: ActionDispatcher,
     private val projectDispatchers: ProjectDispatchers
@@ -34,14 +32,6 @@ class DetailsScreenViewModel(
     }
 
     private fun getMovie(id: String) = viewModelScope.launch(projectDispatchers.ioDispatcher) {
-        openApiRepository.getMovie(id).onSuccess { record ->
-            record?.let {
-                savedStateHandle[SharedParamsNames.SCREEN_STATE.name] = it.toScreenState()
-                searchInfoAboutMovie(record.title)
-            }
-        }.onFailure {
-            Log.d("aaa", "getMovie: isFailure ${it.message}")
-        }
     }
 
     private fun searchInfoAboutMovie(title: String) = viewModelScope.launch(Dispatchers.IO) {

@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-parcelize'
     id "org.jmailen.kotlinter" version "3.12.0"
+    id 'kotlin-kapt'
 }
 
 
@@ -95,6 +96,12 @@ dependencies {
     testImplementation "io.mockk:mockk:1.12.4"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4"
 
+
+    def room_version = "2.4.3"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 }
 
 kotlinter {

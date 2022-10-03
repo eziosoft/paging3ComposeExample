@@ -1,10 +1,14 @@
 package com.eziosoft.parisinnumbers.data
 
+import androidx.room.Room
 import com.eziosoft.parisinnumbers.R
+import com.eziosoft.parisinnumbers.data.local.DbRepositoryImpl
+import com.eziosoft.parisinnumbers.data.local.room.MoviesDatabase
 import com.eziosoft.parisinnumbers.data.remote.OpenApiRepositoryImpl
 import com.eziosoft.parisinnumbers.data.remote.TheMovieDbRepositoryImpl
 import com.eziosoft.parisinnumbers.data.remote.openApi.MoviesAPI
 import com.eziosoft.parisinnumbers.data.remote.theMovieDb.TheMovieDb
+import com.eziosoft.parisinnumbers.domain.repository.DatabaseRepository
 import com.eziosoft.parisinnumbers.domain.repository.OpenApiRepository
 import com.eziosoft.parisinnumbers.domain.repository.TheMovieDbRepository
 import okhttp3.Cache
@@ -56,5 +60,15 @@ val dataModule = module {
             api = get(),
             androidContext().resources.getString(R.string.THE_MOVIES_DB_KEY)
         )
+    }
+
+    single<MoviesDatabase> {
+        Room.databaseBuilder(androidContext(), MoviesDatabase::class.java, "db").build()
+    }
+
+    single { get<MoviesDatabase>().movieDao() }
+
+    single<DatabaseRepository> {
+        DbRepositoryImpl(movieDao = get(), openApiRepository = get())
     }
 }

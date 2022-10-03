@@ -1,12 +1,9 @@
 package com.eziosoft.parisinnumbers.presentation.ui.listScreen
 
-import android.graphics.ColorMatrixColorFilter
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -14,27 +11,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asComposeColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.eziosoft.parisinnumbers.R
-
-
-private val COLOR_MATRIX = floatArrayOf(
-    85f, 85f, 85f, 0f, -128 * 255f,
-    85f, 85f, 85f, 0f, -128 * 255f,
-    85f, 85f, 85f, 0f, -128 * 255f,
-    0f, 0f, 0f, 0.2f, 0f
-)
+import com.eziosoft.parisinnumbers.domain.Movie
 
 @Composable
 fun ListItem(
     viewModel: ListScreenViewModel,
-    movie: MovieTitle
+    movie: Movie
 ) {
     var posterUrl by remember {
         mutableStateOf("")
@@ -44,7 +32,6 @@ fun ListItem(
         viewModel.searchInfoAboutMovie(movie.title) {
             posterUrl = it
         }
-        Log.d("aaaa", "ListItem: LaunchEffect")
     }
 
     Box(
@@ -61,29 +48,39 @@ fun ListItem(
         AsyncImage(
             error = painterResource(id = R.drawable.ic_baseline_local_movies_24),
             contentScale = ContentScale.Crop,
-//            colorFilter = ColorMatrixColorFilter(COLOR_MATRIX).asComposeColorFilter(),
             model = posterUrl,
             contentDescription = movie.title,
-            modifier = Modifier.fillMaxSize(),
-
-            )
-
-        Text(
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.Black.copy(alpha = 0.4f))
-                .padding(6.dp),
-            text = movie.title,
-            style = MaterialTheme.typography.h6,
-            color = Color.White,
-            maxLines = 3,
-            overflow = TextOverflow.Ellipsis
-
-
+            modifier = Modifier.fillMaxSize()
         )
 
-
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black.copy(alpha = 0.5f))
+                .padding(8.dp)
+        ) {
+            Text(
+                text = movie.title,
+                style = MaterialTheme.typography.h6,
+                color = Color.White,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = movie.year,
+                style = MaterialTheme.typography.body1,
+                color = Color.White,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                text = movie.address,
+                style = MaterialTheme.typography.body2,
+                color = Color.LightGray,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
     }
 }
-
