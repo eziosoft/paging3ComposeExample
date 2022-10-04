@@ -2,34 +2,61 @@ package com.eziosoft.parisinnumbers.presentation.ui.mapScreen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.clustering.ClusterManager
+import com.eziosoft.parisinnumbers.domain.Movie
+import com.google.android.gms.maps.model.*
 import com.google.maps.android.compose.*
 import com.google.maps.android.heatmaps.HeatmapTileProvider
 import org.koin.androidx.compose.getViewModel
 
 private val PARIS_POSITION = LatLng(48.8566, 2.3522)
 
-@OptIn(MapsComposeExperimentalApi::class)
 @Composable
 fun MapScreen(modifier: Modifier = Modifier.fillMaxSize()) {
-    val context = LocalContext.current
-
     val viewModel: MapScreenViewModel = getViewModel()
+    Map(
+        viewModel,
+        modifier,
+        onBoundsChange = { bonds ->
+            bonds?.let {
+                viewModel.getMarkers(it)
+            }
+        },
+        onMarkerClick = { markerId ->
+            viewModel.showMovieDetails(markerId) {
+                val selectedMovie = viewModel.screenState.selectedMovie
+                selectedMovie?.let {
+                    Text(it.title)
+                }
+            }
+        }
+    )
+}
+
+@Composable
+private fun Map(
+    viewModel: MapScreenViewModel,
+    modifier: Modifier = Modifier,
+    onBoundsChange: (LatLngBounds?) -> Unit,
+    onMarkerClick: (id: String) -> Unit
+) {
+    val markers: List<Movie> by remember(viewModel.screenState.markers) {
+        mutableStateOf(viewModel.screenState.markers)
+    }
+
     val cameraPositionState = rememberCameraPositionState() {
         position = CameraPosition.fromLatLngZoom(PARIS_POSITION, 11f)
     }
     val uiSettings by remember { mutableStateOf(MapUiSettings()) }
     val properties by remember {
-        mutableStateOf(MapProperties(mapType = MapType.NORMAL))
-    }
-
-    var markers by remember {
-        mutableStateOf(listOf<ClusterMarker>())
+        mutableStateOf(
+            MapProperties(
+                mapType = MapType.NORMAL,
+                mapStyleOptions = MapStyleOptions(mapStyle)
+            )
+        )
     }
 
     var heatmapTileProvider: HeatmapTileProvider? by remember {
@@ -38,11 +65,17 @@ fun MapScreen(modifier: Modifier = Modifier.fillMaxSize()) {
 
     LaunchedEffect(key1 = viewModel.screenState) {
         viewModel.screenState.let { screenState ->
-            markers = screenState.mapMarkerList.map { ClusterMarker(it.position, it.name, it.name) }
-
             screenState.heatmapTileProvider?.let {
                 heatmapTileProvider = it
             }
+        }
+    }
+
+    LaunchedEffect(cameraPositionState.isMoving) {
+        if (!cameraPositionState.isMoving) {
+            onBoundsChange(
+                cameraPositionState.projection?.visibleRegion?.latLngBounds
+            )
         }
     }
 
@@ -53,24 +86,21 @@ fun MapScreen(modifier: Modifier = Modifier.fillMaxSize()) {
             properties = properties,
             cameraPositionState = cameraPositionState
         ) {
-            var clusterManager by remember { mutableStateOf<ClusterManager<ClusterMarker>?>(null) }
-            MapEffect(key1 = markers) { googleMap ->
-                clusterManager = ClusterManager<ClusterMarker>(context, googleMap)
-                clusterManager?.let { clusterManager ->
-                    clusterManager.setAnimation(false)
-                    googleMap.setOnCameraIdleListener(clusterManager)
-                    clusterManager.addItems(markers.map { ClusterMarker(it.position, "", "") })
-                }
-            }
-
-            LaunchedEffect(key1 = cameraPositionState.isMoving) {
-                if (!cameraPositionState.isMoving) {
-                    clusterManager?.onCameraIdle()
-                }
-            }
-
             heatmapTileProvider?.let {
                 TileOverlay(tileProvider = it)
+            }
+
+            markers.forEach { movie ->
+                Marker(
+                    state = MarkerState(position = LatLng(movie.lat, movie.lon)),
+                    snippet = movie.title,
+                    tag = movie.id,
+                    icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE),
+                    onClick = {
+                        onMarkerClick(it.tag as String)
+                        true
+                    }
+                )
             }
         }
     }

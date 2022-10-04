@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import com.eziosoft.parisinnumbers.domain.Movie
 
 data class SharedParameters(
-    var selectedMovieTitle: String = "",
+    var selectedMovieId: String = "",
     val bottomSheetContent: MutableState<@Composable (() -> Unit)> = mutableStateOf({ }),
     var mapMovieList: List<Movie> = emptyList()
 )

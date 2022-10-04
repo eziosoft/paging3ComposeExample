@@ -23,7 +23,7 @@ val presentationModule = module {
     }
 
     viewModel {
-        MapScreenViewModel(get(), get())
+        MapScreenViewModel(get(), get(), get())
     }
 
     single {

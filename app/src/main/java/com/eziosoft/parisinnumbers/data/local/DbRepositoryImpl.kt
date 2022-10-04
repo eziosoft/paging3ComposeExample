@@ -24,6 +24,22 @@ class DbRepositoryImpl(
     override suspend fun getAll(): List<Movie> =
         movieDao.getAll().map { it.toMovie() }
 
-    override suspend fun getPaged(rowNumber: Int, pageSize: Int, searchString: String): List<Movie> =
+    override suspend fun getMovie(id: String): Movie =
+        movieDao.getMovie(id).first().toMovie()
+
+    override suspend fun getPaged(
+        rowNumber: Int,
+        pageSize: Int,
+        searchString: String
+    ): List<Movie> =
         movieDao.getPaged(rowNumber, pageSize, searchString).map { it.toMovie() }
+
+    override suspend fun getByLocation(
+        lat1: Double,
+        lon1: Double,
+        lat2: Double,
+        lon2: Double,
+        numberOfResults: Int
+    ): List<Movie> =
+        movieDao.getByPosition(lat1, lon1, lat2, lon2, numberOfResults).map { it.toMovie() }
 }

@@ -106,7 +106,7 @@ class ListScreenViewModel(
 
     fun navigateToDetails(movieTitle: String) {
         viewModelScope.launch(projectDispatchers.mainDispatcher) {
-            actionDispatcher.sharedParameters.selectedMovieTitle = movieTitle
+            actionDispatcher.sharedParameters.selectedMovieId = movieTitle
             actionDispatcher.dispatchAction(Action.Navigate(Destination.DETAILS_SCREEN))
         }
     }
