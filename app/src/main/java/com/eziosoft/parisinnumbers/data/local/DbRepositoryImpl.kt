@@ -24,8 +24,8 @@ class DbRepositoryImpl(
     override suspend fun getAll(): List<Movie> =
         movieDao.getAll().map { it.toMovie() }
 
-    override suspend fun getMovie(id: String): Movie =
-        movieDao.getMovie(id).first().toMovie()
+    override suspend fun getMovie(id: String): Movie? =
+        movieDao.getMovie(id).firstOrNull()?.toMovie()
 
     override suspend fun getPaged(
         rowNumber: Int,

@@ -15,6 +15,7 @@ import com.eziosoft.parisinnumbers.navigation.Action
 import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
 import com.eziosoft.parisinnumbers.navigation.Destination
 import com.eziosoft.parisinnumbers.presentation.ProjectDispatchers
+import com.eziosoft.parisinnumbers.presentation.ui.movieDetailsBottomSheet.MovieDetailsBottomSheet
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
@@ -110,4 +111,6 @@ class ListScreenViewModel(
             actionDispatcher.dispatchAction(Action.Navigate(Destination.DETAILS_SCREEN))
         }
     }
+
+
 }

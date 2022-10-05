@@ -6,6 +6,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.eziosoft.parisinnumbers.domain.Movie
+import com.eziosoft.parisinnumbers.presentation.ui.movieDetailsBottomSheet.MovieDetailsBottomSheet
 import com.google.android.gms.maps.model.*
 import com.google.maps.android.compose.*
 import com.google.maps.android.heatmaps.HeatmapTileProvider
@@ -26,10 +27,7 @@ fun MapScreen(modifier: Modifier = Modifier.fillMaxSize()) {
         },
         onMarkerClick = { markerId ->
             viewModel.showMovieDetails(markerId) {
-                val selectedMovie = viewModel.screenState.selectedMovie
-                selectedMovie?.let {
-                    Text(it.title)
-                }
+                MovieDetailsBottomSheet()
             }
         }
     )
