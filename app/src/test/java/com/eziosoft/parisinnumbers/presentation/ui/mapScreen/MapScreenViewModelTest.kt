@@ -1,25 +1,25 @@
-//package com.eziosoft.parisinnumbers.presentation.ui.mapScreen
+// package com.eziosoft.parisinnumbers.presentation.ui.mapScreen
 //
-//import com.eziosoft.parisinnumbers.MainCoroutineRule
-//import com.eziosoft.parisinnumbers.domain.Movie
-//import com.eziosoft.parisinnumbers.domain.repository.OpenApiRepository
-//import com.eziosoft.parisinnumbers.presentation.ProjectDispatchers
-//import com.google.android.gms.maps.model.LatLng
-//import io.mockk.coEvery
-//import io.mockk.every
-//import io.mockk.mockk
-//import io.mockk.mockkStatic
-//import kotlinx.coroutines.Dispatchers
-//import kotlinx.coroutines.ExperimentalCoroutinesApi
-//import kotlinx.coroutines.test.advanceUntilIdle
-//import kotlinx.coroutines.test.runTest
-//import org.junit.Rule
-//import org.junit.Test
-//import org.junit.rules.TestRule
-//import kotlin.test.assertEquals
+// import com.eziosoft.parisinnumbers.MainCoroutineRule
+// import com.eziosoft.parisinnumbers.domain.Movie
+// import com.eziosoft.parisinnumbers.domain.repository.OpenApiRepository
+// import com.eziosoft.parisinnumbers.presentation.ProjectDispatchers
+// import com.google.android.gms.maps.model.LatLng
+// import io.mockk.coEvery
+// import io.mockk.every
+// import io.mockk.mockk
+// import io.mockk.mockkStatic
+// import kotlinx.coroutines.Dispatchers
+// import kotlinx.coroutines.ExperimentalCoroutinesApi
+// import kotlinx.coroutines.test.advanceUntilIdle
+// import kotlinx.coroutines.test.runTest
+// import org.junit.Rule
+// import org.junit.Test
+// import org.junit.rules.TestRule
+// import kotlin.test.assertEquals
 //
-//@OptIn(ExperimentalCoroutinesApi::class)
-//internal class MapScreenViewModelTest {
+// @OptIn(ExperimentalCoroutinesApi::class)
+// internal class MapScreenViewModelTest {
 //
 //    @get:Rule
 //    var rule: TestRule = MainCoroutineRule()
@@ -46,7 +46,7 @@
 //        coEvery { getAllMovies() } returns Result.success(movieList)
 //    }
 //
-////    private val actionDispatcher: ActionDispatcher = ActionDispatcher(SharedParameters())
+// //    private val actionDispatcher: ActionDispatcher = ActionDispatcher(SharedParameters())
 //    private val projectDispatchers = ProjectDispatchers(
 //        mainDispatcher = Dispatchers.Main,
 //        ioDispatcher = Dispatchers.Main
@@ -93,4 +93,4 @@
 //            )
 //        } returns android.graphics.Color.GRAY
 //    }
-//}
+// }

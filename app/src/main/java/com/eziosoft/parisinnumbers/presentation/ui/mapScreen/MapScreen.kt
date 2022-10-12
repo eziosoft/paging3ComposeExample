@@ -2,7 +2,6 @@ package com.eziosoft.parisinnumbers.presentation.ui.mapScreen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.eziosoft.parisinnumbers.domain.Movie
@@ -26,9 +25,12 @@ fun MapScreen(modifier: Modifier = Modifier.fillMaxSize()) {
             }
         },
         onMarkerClick = { markerId ->
-            viewModel.showMovieDetails(markerId) {
-                MovieDetailsBottomSheet()
-            }
+            viewModel.showMovieDetails(
+                id = markerId,
+                content = {
+                    MovieDetailsBottomSheet()
+                }
+            )
         }
     )
 }

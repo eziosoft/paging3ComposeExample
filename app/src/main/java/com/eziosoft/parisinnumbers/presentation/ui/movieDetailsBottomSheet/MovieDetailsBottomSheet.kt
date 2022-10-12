@@ -22,7 +22,7 @@ fun MovieDetailsBottomSheet() {
     val state = viewModel.state
     val movie = state.movie
 
-    LaunchedEffect(key1 = viewModel.actionDispatcher.sharedParameters.selectedMovieId) {
+    LaunchedEffect(key1 = viewModel.actionDispatcher.sharedParameters.selectedMovieId.value) {
         viewModel.getMovieById()
     }
     Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
@@ -101,7 +101,6 @@ private fun Content(movie: Movie) {
                     style = MaterialTheme.typography.body1,
                     color = Color.LightGray
                 )
-
             }
         }
         Spacer(modifier = Modifier.height(16.dp))

@@ -24,14 +24,11 @@ class MovieDetailsBottomSheetViewModel(
     var state by mutableStateOf(ScreenState())
         private set
 
-    init {
-        getMovieById()
-    }
-
     fun getMovieById() {
         Log.d("aaa", "getMovieById: ${actionDispatcher.sharedParameters.selectedMovieId}")
         viewModelScope.launch(projectDispatchers.ioDispatcher) {
-            val movie = dbRepository.getMovie(actionDispatcher.sharedParameters.selectedMovieId)
+            val movie =
+                dbRepository.getMovie(actionDispatcher.sharedParameters.selectedMovieId.value)
             movie?.let {
                 withContext(projectDispatchers.mainDispatcher) {
                     state = state.copy(movie = it)

@@ -68,17 +68,10 @@ class MapScreenViewModel(
     }
 
     fun showMovieDetails(id: String, content: @Composable () -> Unit) {
-        viewModelScope.launch(projectDispatchers.mainDispatcher) {
-            actionDispatcher.sharedParameters.selectedMovieId = id
-            getMovie(id)
+        viewModelScope.launch {
+            actionDispatcher.sharedParameters.selectedMovieId.value = id
             actionDispatcher.sharedParameters.bottomSheetContent.value = content
             actionDispatcher.dispatchAction(Action.ToggleBottomSheet(true))
-        }
-    }
-
-    private fun getMovie(id: String) {
-        viewModelScope.launch(projectDispatchers.ioDispatcher) {
-            screenState = screenState.copy(selectedMovie = dbRepository.getMovie(id))
         }
     }
 }

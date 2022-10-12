@@ -41,7 +41,6 @@ fun ListItem(
             .background(Color(0xFF2d2d30))
             .aspectRatio(1f)
             .clickable {
-                viewModel.navigateToDetails(movieTitle = movie.title)
             },
         contentAlignment = Alignment.Center
     ) {

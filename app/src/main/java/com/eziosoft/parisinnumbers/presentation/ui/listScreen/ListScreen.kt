@@ -46,13 +46,10 @@ fun ListScreen(modifier: Modifier = Modifier) {
             )
 
             LazyVerticalGrid(
-
                 columns = GridCells.Fixed(2),
                 contentPadding = PaddingValues(16.dp),
                 modifier = Modifier
                     .fillMaxSize(),
-//                    .padding(horizontal = 4.dp),
-
                 state = listState
             ) {
                 items(state.items.size) { i ->

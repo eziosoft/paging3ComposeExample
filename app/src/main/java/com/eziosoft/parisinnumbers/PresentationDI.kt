@@ -1,8 +1,6 @@
 package com.eziosoft.parisinnumbers
 
-import androidx.lifecycle.SavedStateHandle
 import com.eziosoft.parisinnumbers.presentation.ProjectDispatchers
-import com.eziosoft.parisinnumbers.presentation.ui.detailsScreen.DetailsScreenViewModel
 import com.eziosoft.parisinnumbers.presentation.ui.listScreen.ListScreenViewModel
 import com.eziosoft.parisinnumbers.presentation.ui.mapScreen.MapScreenViewModel
 import com.eziosoft.parisinnumbers.presentation.ui.movieDetailsBottomSheet.MovieDetailsBottomSheetViewModel
@@ -12,15 +10,6 @@ import org.koin.dsl.module
 val presentationModule = module {
     viewModel {
         ListScreenViewModel(get(), get(), get(), get())
-    }
-
-    viewModel { (savedStateHandle: SavedStateHandle) ->
-        DetailsScreenViewModel(
-            savedStateHandle = savedStateHandle,
-            actionDispatcher = get(),
-            movieDbRepository = get(),
-            projectDispatchers = get()
-        )
     }
 
     viewModel {

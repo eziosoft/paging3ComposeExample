@@ -20,7 +20,6 @@ import androidx.navigation.compose.rememberNavController
 import com.eziosoft.parisinnumbers.navigation.Action
 import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
 import com.eziosoft.parisinnumbers.navigation.Destination
-import com.eziosoft.parisinnumbers.presentation.ui.detailsScreen.detailsScreen
 import com.eziosoft.parisinnumbers.presentation.ui.listScreen.listScreen
 import com.eziosoft.parisinnumbers.presentation.ui.mapScreen.mapScreen
 import com.eziosoft.parisinnumbers.presentation.ui.theme.PrimaryLight
@@ -66,7 +65,6 @@ fun NavigationComponent(
                 actionDispatcher.sharedParameters.bottomSheetContent.value()
             }
         },
-
         sheetPeekHeight = 0.dp
     ) { scaffoldPaddings1 ->
 
@@ -105,7 +103,6 @@ fun NavigationComponent(
                 startDestination = startDestination
             ) {
                 listScreen()
-                detailsScreen()
                 mapScreen()
             }
         }
