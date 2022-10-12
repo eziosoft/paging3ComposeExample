@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.eziosoft.parisinnumbers.R
 import com.eziosoft.parisinnumbers.domain.Movie
+import com.eziosoft.parisinnumbers.presentation.ui.movieDetailsBottomSheet.MovieDetailsBottomSheet
 
 @Composable
 fun ListItem(
@@ -41,6 +42,12 @@ fun ListItem(
             .background(Color(0xFF2d2d30))
             .aspectRatio(1f)
             .clickable {
+                viewModel.showMovieDetails(
+                    id = movie.id,
+                    content = {
+                        MovieDetailsBottomSheet()
+                    }
+                )
             },
         contentAlignment = Alignment.Center
     ) {

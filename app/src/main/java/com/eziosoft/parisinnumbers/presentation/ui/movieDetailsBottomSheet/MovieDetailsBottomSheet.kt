@@ -1,5 +1,6 @@
 package com.eziosoft.parisinnumbers.presentation.ui.movieDetailsBottomSheet
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
@@ -9,10 +10,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.eziosoft.parisinnumbers.R
 import com.eziosoft.parisinnumbers.domain.Movie
 import org.koin.androidx.compose.getViewModel
 
@@ -63,17 +66,19 @@ private fun Content(movie: Movie) {
             modifier = Modifier,
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            AsyncImage(
-                model = "https://cdn.shopify.com/s/files/1/0548/8404/0870/products/TheFrontLine-WarMoviePoster_821048c5-929c-44af-97ea-75dc51073889_1200x.jpg?v=1617381737",
-                contentDescription = movie.title,
-                modifier = Modifier
-                    .weight(1f)
-            )
+            AnimatedVisibility(movie.posterUrl.isNotEmpty(), modifier = Modifier.height(200.dp)) {
+                AsyncImage(
+                    model = movie.posterUrl,
+                    contentDescription = movie.title,
+                    fallback = painterResource(id = R.drawable.ic_baseline_local_movies_24),
+                    placeholder = painterResource(id = R.drawable.ic_baseline_local_movies_24)
+
+                )
+            }
 
             Column(
                 modifier = Modifier
                     .padding(4.dp)
-                    .weight(1f)
             ) {
                 Text(
                     text = "Address: ${movie.address}",
@@ -104,11 +109,13 @@ private fun Content(movie: Movie) {
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = movie.description,
-            style = MaterialTheme.typography.body1,
-            color = Color.White
-        )
+        AnimatedVisibility(visible = movie.description.isNotEmpty()) {
+            Text(
+                text = movie.description,
+                style = MaterialTheme.typography.body1,
+                color = Color.White
+            )
+        }
     }
 }
 

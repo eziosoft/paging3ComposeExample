@@ -1,6 +1,7 @@
 package com.eziosoft.parisinnumbers.presentation.ui.listScreen
 
 import android.util.Log
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -11,6 +12,7 @@ import com.eziosoft.parisinnumbers.data.remote.openApi.PAGE_SIZE
 import com.eziosoft.parisinnumbers.domain.Movie
 import com.eziosoft.parisinnumbers.domain.repository.DatabaseRepository
 import com.eziosoft.parisinnumbers.domain.repository.TheMovieDbRepository
+import com.eziosoft.parisinnumbers.navigation.Action
 import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
 import com.eziosoft.parisinnumbers.presentation.ProjectDispatchers
 import kotlinx.coroutines.FlowPreview
@@ -101,4 +103,12 @@ class ListScreenViewModel(
                 Log.d("aaa", "searchInfoAboutMovie: isFailure ${it.message}")
             }
         }
+
+    fun showMovieDetails(id: String, content: @Composable () -> Unit) {
+        viewModelScope.launch {
+            actionDispatcher.sharedParameters.selectedMovieId.value = id
+            actionDispatcher.sharedParameters.bottomSheetContent.value = content
+            actionDispatcher.dispatchAction(Action.ToggleBottomSheet(true))
+        }
+    }
 }
