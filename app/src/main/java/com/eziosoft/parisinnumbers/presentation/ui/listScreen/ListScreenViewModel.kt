@@ -1,6 +1,5 @@
 package com.eziosoft.parisinnumbers.presentation.ui.listScreen
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -11,7 +10,6 @@ import com.eziosoft.parisinnumbers.data.DefaultPaginator
 import com.eziosoft.parisinnumbers.data.remote.openApi.PAGE_SIZE
 import com.eziosoft.parisinnumbers.domain.Movie
 import com.eziosoft.parisinnumbers.domain.repository.DatabaseRepository
-import com.eziosoft.parisinnumbers.domain.repository.TheMovieDbRepository
 import com.eziosoft.parisinnumbers.navigation.Action
 import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
 import com.eziosoft.parisinnumbers.presentation.ProjectDispatchers
@@ -23,7 +21,6 @@ import kotlinx.coroutines.withContext
 
 class ListScreenViewModel(
     private val dbRepository: DatabaseRepository,
-    private val movieDbRepository: TheMovieDbRepository,
     private val actionDispatcher: ActionDispatcher,
     private val projectDispatchers: ProjectDispatchers
 ) : ViewModel() {
@@ -87,22 +84,22 @@ class ListScreenViewModel(
         }
     }
 
-    fun searchInfoAboutMovie(title: String, callback: (posterUrl: String) -> Unit) =
-        viewModelScope.launch(projectDispatchers.ioDispatcher) {
-            movieDbRepository.search(title).onSuccess { list ->
-                list?.let { listOfMovies ->
-                    if (listOfMovies.isNotEmpty()) {
-                        listOfMovies.forEach { movie ->
-                            if (movie.title?.uppercase() == title.uppercase() && movie.poster_path != null) {
-                                callback(movie.poster_path)
-                            }
-                        }
-                    }
-                }
-            }.onFailure {
-                Log.d("aaa", "searchInfoAboutMovie: isFailure ${it.message}")
-            }
-        }
+//    fun searchInfoAboutMovie(title: String, callback: (posterUrl: String) -> Unit) =
+//        viewModelScope.launch(projectDispatchers.ioDispatcher) {
+//            movieDbRepository.search(title).onSuccess { list ->
+//                list?.let { listOfMovies ->
+//                    if (listOfMovies.isNotEmpty()) {
+//                        listOfMovies.forEach { movie ->
+//                            if (movie.title?.uppercase() == title.uppercase() && movie.poster_path != null) {
+//                                callback(movie.poster_path)
+//                            }
+//                        }
+//                    }
+//                }
+//            }.onFailure {
+//                Log.d("aaa", "searchInfoAboutMovie: isFailure ${it.message}")
+//            }
+//        }
 
     fun showMovieDetails(id: String, content: @Composable () -> Unit) {
         viewModelScope.launch {

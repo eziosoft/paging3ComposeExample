@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import com.eziosoft.parisinnumbers.presentation.ui.movieDetailsBottomSheet.MovieDetailsBottomSheet
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -60,7 +61,14 @@ fun ListScreen(modifier: Modifier = Modifier) {
                         viewModel.loadNextItems()
                     }
                     val item = state.items[i]
-                    ListItem(viewModel, item)
+                    ListItem(item, onClick = {
+                        viewModel.showMovieDetails(
+                            id = it,
+                            content = {
+                                MovieDetailsBottomSheet()
+                            }
+                        )
+                    })
                 }
                 item {
                     if (state.isLoading) {

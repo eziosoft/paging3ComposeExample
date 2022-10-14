@@ -18,23 +18,12 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.eziosoft.parisinnumbers.R
 import com.eziosoft.parisinnumbers.domain.Movie
-import com.eziosoft.parisinnumbers.presentation.ui.movieDetailsBottomSheet.MovieDetailsBottomSheet
 
 @Composable
 fun ListItem(
-    viewModel: ListScreenViewModel,
-    movie: Movie
+    movie: Movie,
+    onClick: (movieId: String) -> Unit
 ) {
-    var posterUrl by remember {
-        mutableStateOf("")
-    }
-
-    LaunchedEffect(key1 = true) {
-        viewModel.searchInfoAboutMovie(movie.title) {
-            posterUrl = it
-        }
-    }
-
     Box(
         modifier = Modifier
             .padding(4.dp)
@@ -42,19 +31,14 @@ fun ListItem(
             .background(Color(0xFF2d2d30))
             .aspectRatio(1f)
             .clickable {
-                viewModel.showMovieDetails(
-                    id = movie.id,
-                    content = {
-                        MovieDetailsBottomSheet()
-                    }
-                )
+                onClick(movie.id)
             },
         contentAlignment = Alignment.Center
     ) {
         AsyncImage(
             error = painterResource(id = R.drawable.ic_baseline_local_movies_24),
             contentScale = ContentScale.Crop,
-            model = posterUrl,
+            model = movie.posterUrl,
             contentDescription = movie.title,
             modifier = Modifier.fillMaxSize()
         )

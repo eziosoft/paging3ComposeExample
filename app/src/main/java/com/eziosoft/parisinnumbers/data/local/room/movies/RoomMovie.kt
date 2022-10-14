@@ -1,4 +1,4 @@
-package com.eziosoft.parisinnumbers.data.local.room
+package com.eziosoft.parisinnumbers.data.local.room.movies
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

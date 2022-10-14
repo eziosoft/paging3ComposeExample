@@ -34,26 +34,6 @@ class MovieDetailsBottomSheetViewModel(
                 withContext(projectDispatchers.mainDispatcher) {
                     state = state.copy(movie = it)
                 }
-
-                launch {
-                    theMovieDb.search(state.movie.title).onSuccess { list ->
-                        list?.let { listOfMovies ->
-                            if (listOfMovies.isNotEmpty()) {
-                                listOfMovies.forEach { movie ->
-                                    if (movie.title?.uppercase() == state.movie.title.uppercase() && movie.poster_path != null) {
-                                        state =
-                                            state.copy(
-                                                movie = state.movie.copy(
-                                                    posterUrl = movie.poster_path,
-                                                    description = movie.overview ?: ""
-                                                )
-                                            )
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
             }
         }
     }

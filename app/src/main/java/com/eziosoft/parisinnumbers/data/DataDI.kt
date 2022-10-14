@@ -58,7 +58,8 @@ val dataModule = module {
     single<TheMovieDbRepository> {
         TheMovieDbRepositoryImpl(
             api = get(),
-            androidContext().resources.getString(R.string.THE_MOVIES_DB_KEY)
+            androidContext().resources.getString(R.string.THE_MOVIES_DB_KEY),
+            get()
         )
     }
 
@@ -67,8 +68,9 @@ val dataModule = module {
     }
 
     single { get<MoviesDatabase>().movieDao() }
+    single { get<MoviesDatabase>().roomMovieDetailsDao() }
 
     single<DatabaseRepository> {
-        DbRepositoryImpl(movieDao = get(), openApiRepository = get())
+        DbRepositoryImpl(movieDao = get(), openApiRepository = get(), get())
     }
 }

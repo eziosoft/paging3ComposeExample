@@ -9,7 +9,7 @@ import org.koin.dsl.module
 
 val presentationModule = module {
     viewModel {
-        ListScreenViewModel(get(), get(), get(), get())
+        ListScreenViewModel(get(), get(), get())
     }
 
     viewModel {
