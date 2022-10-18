@@ -38,7 +38,7 @@ fun ListItem(
         AsyncImage(
             error = painterResource(id = R.drawable.ic_baseline_local_movies_24),
             contentScale = ContentScale.Crop,
-            model = movie.posterUrl,
+            model = movie.getFullPosterUrl(),
             contentDescription = movie.title,
             modifier = Modifier.fillMaxSize()
         )

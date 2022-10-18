@@ -17,4 +17,8 @@ data class Movie(
 
     val description: String = "",
     val posterUrl: String = ""
-)
+) {
+    fun getFullPosterUrl() = POSTER_URL_PREFIX + posterUrl
+}
+
+private const val POSTER_URL_PREFIX = "https://image.tmdb.org/t/p/w500"

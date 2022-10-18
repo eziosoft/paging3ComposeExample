@@ -32,4 +32,7 @@ interface MovieDao {
         lon2: Double,
         numberOfResults: Int
     ): List<RoomMovie>
+
+    @Query("SELECT (SELECT COUNT(*) FROM movies) == 0")
+    fun isEmpty(): Boolean
 }

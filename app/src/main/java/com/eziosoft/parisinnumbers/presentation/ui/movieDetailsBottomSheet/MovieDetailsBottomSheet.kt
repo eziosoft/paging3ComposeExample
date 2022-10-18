@@ -1,8 +1,11 @@
 package com.eziosoft.parisinnumbers.presentation.ui.movieDetailsBottomSheet
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -28,7 +31,13 @@ fun MovieDetailsBottomSheet() {
     LaunchedEffect(key1 = viewModel.actionDispatcher.sharedParameters.selectedMovieId.value) {
         viewModel.getMovieById()
     }
-    Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(0.6f)
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Spacer(
             modifier = Modifier
                 .padding(4.dp)
@@ -66,13 +75,16 @@ private fun Content(movie: Movie) {
             modifier = Modifier,
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            AnimatedVisibility(movie.posterUrl.isNotEmpty(), modifier = Modifier.height(200.dp)) {
+            Log.d("aaa", "Content: ${movie.posterUrl}")
+            AnimatedVisibility(movie.posterUrl.isNotEmpty()) {
                 AsyncImage(
-                    model = movie.posterUrl,
+                    modifier = Modifier
+                        .height(200.dp),
+                    model = movie.getFullPosterUrl(),
                     contentDescription = movie.title,
                     fallback = painterResource(id = R.drawable.ic_baseline_local_movies_24),
-                    placeholder = painterResource(id = R.drawable.ic_baseline_local_movies_24)
-
+                    placeholder = painterResource(id = R.drawable.ic_baseline_local_movies_24),
+                    error = painterResource(id = R.drawable.ic_baseline_local_movies_24)
                 )
             }
 

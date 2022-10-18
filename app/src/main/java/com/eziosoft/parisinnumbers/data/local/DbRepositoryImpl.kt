@@ -7,6 +7,9 @@ import com.eziosoft.parisinnumbers.domain.Movie
 import com.eziosoft.parisinnumbers.domain.repository.DatabaseRepository
 import com.eziosoft.parisinnumbers.domain.repository.OpenApiRepository
 import com.eziosoft.parisinnumbers.domain.repository.TheMovieDbRepository
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 
 class DbRepositoryImpl(
     private val movieDao: MovieDao,
@@ -31,7 +34,7 @@ class DbRepositoryImpl(
             val movieDetails = theMovieDbRepository.search(it.title)
             if (movieDetails != null) {
                 it.toMovie().copy(
-                    posterUrl = "https://image.tmdb.org/t/p/w500${movieDetails.posterUrl}",
+                    posterUrl = movieDetails.posterUrl,
                     description = movieDetails.description
                 )
             } else {
@@ -44,17 +47,21 @@ class DbRepositoryImpl(
         pageSize: Int,
         searchString: String
     ): List<Movie> =
-        movieDao.getPaged(rowNumber, pageSize, searchString).map {
+        movieDao.getPaged(rowNumber, pageSize, searchString).parallelMap {
             val movieDetails = theMovieDbRepository.search(it.title)
             if (movieDetails != null) {
                 it.toMovie().copy(
-                    posterUrl = "https://image.tmdb.org/t/p/w500${movieDetails.posterUrl}",
+                    posterUrl = movieDetails.posterUrl,
                     description = movieDetails.description
                 )
             } else {
                 it.toMovie()
             }
         }
+
+    private suspend fun <A, B> Iterable<A>.parallelMap(f: suspend (A) -> B): List<B> = coroutineScope {
+        map { async { f(it) } }.awaitAll()
+    }
 
     override suspend fun getByLocation(
         lat1: Double,
