@@ -4,12 +4,14 @@ import com.eziosoft.parisinnumbers.data.local.room.movies.MovieDao
 import com.eziosoft.parisinnumbers.data.toMovie
 import com.eziosoft.parisinnumbers.data.toRoomMovie
 import com.eziosoft.parisinnumbers.domain.Movie
+import com.eziosoft.parisinnumbers.domain.repository.DBState
 import com.eziosoft.parisinnumbers.domain.repository.DatabaseRepository
 import com.eziosoft.parisinnumbers.domain.repository.OpenApiRepository
 import com.eziosoft.parisinnumbers.domain.repository.TheMovieDbRepository
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class DbRepositoryImpl(
     private val movieDao: MovieDao,
@@ -17,11 +19,26 @@ class DbRepositoryImpl(
     private val theMovieDbRepository: TheMovieDbRepository
 ) : DatabaseRepository {
 
-    override suspend fun fillDb() {
+    private val _dbStateFlow = MutableStateFlow(DBState.Unknown)
+    override val dbStateFlow: StateFlow<DBState> = _dbStateFlow.asStateFlow()
+
+    init {
+        CoroutineScope(Dispatchers.IO).launch {
+            if (movieDao.isRoomEmpty()) {
+                _dbStateFlow.emit(DBState.Updating)
+                fillDb()
+                _dbStateFlow.emit(DBState.Ready)
+            } else {
+                _dbStateFlow.emit(DBState.Ready)
+            }
+        }
+    }
+
+    private suspend fun fillDb() {
         val allMoviesResult = openApiRepository.getAllMovies()
         allMoviesResult.onSuccess { movies ->
-            movies?.let {
-                movieDao.insertAll(it.map { it.toRoomMovie() })
+            movies?.let { listOfMovies ->
+                movieDao.insertAll(listOfMovies.map { it.toRoomMovie() })
             }
         }
     }
@@ -59,9 +76,10 @@ class DbRepositoryImpl(
             }
         }
 
-    private suspend fun <A, B> Iterable<A>.parallelMap(f: suspend (A) -> B): List<B> = coroutineScope {
-        map { async { f(it) } }.awaitAll()
-    }
+    private suspend fun <A, B> Iterable<A>.parallelMap(f: suspend (A) -> B): List<B> =
+        coroutineScope {
+            map { async { f(it) } }.awaitAll()
+        }
 
     override suspend fun getByLocation(
         lat1: Double,

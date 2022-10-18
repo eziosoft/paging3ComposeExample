@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.eziosoft.parisinnumbers.data.DefaultPaginator
 import com.eziosoft.parisinnumbers.data.remote.openApi.PAGE_SIZE
 import com.eziosoft.parisinnumbers.domain.Movie
+import com.eziosoft.parisinnumbers.domain.repository.DBState
 import com.eziosoft.parisinnumbers.domain.repository.DatabaseRepository
 import com.eziosoft.parisinnumbers.navigation.Action
 import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
@@ -30,6 +31,20 @@ class ListScreenViewModel(
 
     private val searchFlow = MutableStateFlow("")
     private var searchString = ""
+
+    init {
+        viewModelScope.launch {
+            dbRepository.dbStateFlow.collect() {
+                state = state.copy(dbState = it)
+
+                when (it) {
+                    DBState.Unknown -> Unit
+                    DBState.Updating -> Unit
+                    DBState.Ready -> observeSearch()
+                }
+            }
+        }
+    }
 
     private val paginator = DefaultPaginator<Int, List<Movie>>(
         initialPageIndex = state.page,
@@ -55,10 +70,6 @@ class ListScreenViewModel(
             )
         }
     )
-
-    init {
-        observeSearch()
-    }
 
     fun loadNextItems() {
         viewModelScope.launch {

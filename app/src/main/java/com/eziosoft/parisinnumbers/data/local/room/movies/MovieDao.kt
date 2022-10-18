@@ -34,5 +34,5 @@ interface MovieDao {
     ): List<RoomMovie>
 
     @Query("SELECT (SELECT COUNT(*) FROM movies) == 0")
-    fun isEmpty(): Boolean
+    fun isRoomEmpty(): Boolean
 }

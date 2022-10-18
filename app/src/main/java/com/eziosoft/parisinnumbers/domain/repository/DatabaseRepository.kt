@@ -1,9 +1,14 @@
 package com.eziosoft.parisinnumbers.domain.repository
 
 import com.eziosoft.parisinnumbers.domain.Movie
+import kotlinx.coroutines.flow.StateFlow
+
+enum class DBState {
+    Unknown, Updating, Ready
+}
 
 interface DatabaseRepository {
-    suspend fun fillDb()
+    val dbStateFlow: StateFlow<DBState>
     suspend fun getAll(): List<Movie>
     suspend fun getMovie(id: String): Movie?
     suspend fun getPaged(rowNumber: Int, pageSize: Int, searchString: String): List<Movie>

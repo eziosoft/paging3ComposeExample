@@ -17,8 +17,8 @@ private val PARIS_POSITION = LatLng(48.8566, 2.3522)
 fun MapScreen(modifier: Modifier = Modifier.fillMaxSize()) {
     val viewModel: MapScreenViewModel = getViewModel()
     Map(
-        viewModel,
-        modifier,
+        viewModel = viewModel,
+        modifier = modifier,
         onBoundsChange = { bonds ->
             bonds?.let {
                 viewModel.getMarkers(it)
@@ -38,8 +38,8 @@ fun MapScreen(modifier: Modifier = Modifier.fillMaxSize()) {
 @Composable
 private fun Map(
     viewModel: MapScreenViewModel,
-    modifier: Modifier = Modifier,
     onBoundsChange: (LatLngBounds?) -> Unit,
+    modifier: Modifier = Modifier,
     onMarkerClick: (id: String) -> Unit
 ) {
     val markers: List<Movie> by remember(viewModel.screenState.markers) {
