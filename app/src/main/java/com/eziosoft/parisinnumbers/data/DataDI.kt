@@ -1,16 +1,12 @@
 package com.eziosoft.parisinnumbers.data
 
-import androidx.room.Room
 import com.eziosoft.parisinnumbers.R
-import com.eziosoft.parisinnumbers.data.local.DbRepositoryImpl
-import com.eziosoft.parisinnumbers.data.local.room.MoviesDatabase
 import com.eziosoft.parisinnumbers.data.remote.OpenApiRepositoryImpl
-import com.eziosoft.parisinnumbers.data.remote.TheMovieDbRepositoryImpl
+import com.eziosoft.parisinnumbers.data.remote.TheMovieDbApiRepositoryImpl
 import com.eziosoft.parisinnumbers.data.remote.openApi.MoviesAPI
-import com.eziosoft.parisinnumbers.data.remote.theMovieDb.TheMovieDb
-import com.eziosoft.parisinnumbers.domain.repository.DatabaseRepository
+import com.eziosoft.parisinnumbers.data.remote.theMovieDbApi.TheMovieDbApi
 import com.eziosoft.parisinnumbers.domain.repository.OpenApiRepository
-import com.eziosoft.parisinnumbers.domain.repository.TheMovieDbRepository
+import com.eziosoft.parisinnumbers.domain.repository.TheMovieDbApiRepository
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -20,7 +16,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 
-val dataModule = module {
+val apiModule = module {
     single<OkHttpClient> {
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.NONE
@@ -46,31 +42,20 @@ val dataModule = module {
         OpenApiRepositoryImpl(get())
     }
 
-    single<TheMovieDb> {
+    single<TheMovieDbApi> {
         val retrofit = Retrofit.Builder()
-            .baseUrl(TheMovieDb.BASE_URL)
+            .baseUrl(TheMovieDbApi.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(get())
             .build()
-        retrofit.create(TheMovieDb::class.java)
+        retrofit.create(TheMovieDbApi::class.java)
     }
 
-    single<TheMovieDbRepository> {
-        TheMovieDbRepositoryImpl(
+    single<TheMovieDbApiRepository> {
+        TheMovieDbApiRepositoryImpl(
             api = get(),
             androidContext().resources.getString(R.string.THE_MOVIES_DB_KEY),
             get()
         )
-    }
-
-    single<MoviesDatabase> {
-        Room.databaseBuilder(androidContext(), MoviesDatabase::class.java, "db").build()
-    }
-
-    single { get<MoviesDatabase>().movieDao() }
-    single { get<MoviesDatabase>().roomMovieDetailsDao() }
-
-    single<DatabaseRepository> {
-        DbRepositoryImpl(movieDao = get(), openApiRepository = get(), get())
     }
 }

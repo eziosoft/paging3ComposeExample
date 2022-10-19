@@ -1,10 +1,9 @@
 package com.eziosoft.parisinnumbers.data.remote.openApi
 
+import com.eziosoft.parisinnumbers.data.remote.openApi.models.allMovies.AllMovies
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
-
-const val PAGE_SIZE = 100
 
 interface MoviesAPI {
     companion object {
@@ -14,5 +13,11 @@ interface MoviesAPI {
     @GET("{dataset}/exports/json")
     suspend fun getAllMovies(
         @Path("dataset") datasets: String
-    ): Response<com.eziosoft.parisinnumbers.data.remote.openApi.models.allMovies.AllMovies>
+    ): Response<AllMovies>
+}
+
+const val PAGE_SIZE = 100
+
+enum class OpenApiDataset(val title: String) {
+    MOVIES("lieux-de-tournage-a-paris")
 }

@@ -1,11 +1,11 @@
-package com.eziosoft.parisinnumbers.data.remote.theMovieDb
+package com.eziosoft.parisinnumbers.data.remote.theMovieDbApi
 
-import com.eziosoft.parisinnumbers.data.remote.theMovieDb.models.SearchResult
+import com.eziosoft.parisinnumbers.data.remote.theMovieDbApi.models.SearchResult
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface TheMovieDb {
+interface TheMovieDbApi {
 
     companion object {
         const val BASE_URL = "https://api.themoviedb.org/3/"

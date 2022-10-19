@@ -1,4 +1,4 @@
-package com.eziosoft.parisinnumbers.data.remote.theMovieDb.models
+package com.eziosoft.parisinnumbers.data.remote.theMovieDbApi.models
 
 data class MovieResult(
     val adult: Boolean,

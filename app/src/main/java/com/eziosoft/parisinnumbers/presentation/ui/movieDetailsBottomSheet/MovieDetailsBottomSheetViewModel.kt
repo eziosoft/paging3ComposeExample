@@ -6,8 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eziosoft.parisinnumbers.domain.Movie
-import com.eziosoft.parisinnumbers.domain.repository.DatabaseRepository
-import com.eziosoft.parisinnumbers.domain.repository.TheMovieDbRepository
+import com.eziosoft.parisinnumbers.domain.repository.LocalDatabaseRepository
 import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
 import com.eziosoft.parisinnumbers.presentation.ProjectDispatchers
 import kotlinx.coroutines.launch
@@ -17,8 +16,7 @@ data class ScreenState(val movie: Movie = Movie())
 
 class MovieDetailsBottomSheetViewModel(
     private val projectDispatchers: ProjectDispatchers,
-    private val dbRepository: DatabaseRepository,
-    private val theMovieDb: TheMovieDbRepository,
+    private val dbRepository: LocalDatabaseRepository,
     val actionDispatcher: ActionDispatcher
 ) : ViewModel() {
 

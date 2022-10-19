@@ -6,7 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eziosoft.parisinnumbers.domain.Movie
-import com.eziosoft.parisinnumbers.domain.repository.DatabaseRepository
+import com.eziosoft.parisinnumbers.domain.repository.LocalDatabaseRepository
 import com.eziosoft.parisinnumbers.navigation.Action
 import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
 import com.eziosoft.parisinnumbers.presentation.ProjectDispatchers
@@ -23,7 +23,7 @@ data class ScreenState(
 )
 
 class MapScreenViewModel(
-    private val dbRepository: DatabaseRepository,
+    private val dbRepository: LocalDatabaseRepository,
     val actionDispatcher: ActionDispatcher,
     private val projectDispatchers: ProjectDispatchers
 ) : ViewModel() {

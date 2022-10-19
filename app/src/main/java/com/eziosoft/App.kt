@@ -1,7 +1,8 @@
 package com.eziosoft
 
 import android.app.Application
-import com.eziosoft.parisinnumbers.data.dataModule
+import com.eziosoft.parisinnumbers.data.apiModule
+import com.eziosoft.parisinnumbers.data.local.room.roomModule
 import com.eziosoft.parisinnumbers.navigation.navigationModule
 import com.eziosoft.parisinnumbers.presentationModule
 import org.koin.android.ext.koin.androidContext
@@ -14,7 +15,12 @@ class App : Application() {
         startKoin {
             androidLogger()
             androidContext(this@App)
-            modules(dataModule, presentationModule, navigationModule)
+            modules(
+                roomModule,
+                apiModule,
+                presentationModule,
+                navigationModule
+            )
         }
     }
 }

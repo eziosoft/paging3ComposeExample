@@ -1,6 +1,4 @@
-package com.eziosoft.parisinnumbers.data
-
-import com.eziosoft.parisinnumbers.domain.Paginator
+package com.eziosoft.parisinnumbers.domain.paginator
 
 class DefaultPaginator<PageIndex, Page>(
     private val initialPageIndex: PageIndex,

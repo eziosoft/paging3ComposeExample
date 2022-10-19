@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "movies")
-data class RoomMovie(
+data class LocalMovie(
     @PrimaryKey val id: String,
     val address: String,
     val year: String,

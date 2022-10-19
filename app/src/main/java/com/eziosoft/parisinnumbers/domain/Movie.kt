@@ -4,7 +4,7 @@ data class Movie(
     val id: String = "",
     val address: String = "",
     val year: String = "",
-    val ardt_lieu: String = "",
+    val district: String = "",
     val lon: Double = 0.0,
     val lat: Double = 0.0,
     val startDate: String = "",

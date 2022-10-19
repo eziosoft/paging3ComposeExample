@@ -3,11 +3,7 @@ package com.eziosoft.parisinnumbers.domain.repository
 import com.eziosoft.parisinnumbers.domain.Movie
 import kotlinx.coroutines.flow.StateFlow
 
-enum class DBState {
-    Unknown, Updating, Ready
-}
-
-interface DatabaseRepository {
+interface LocalDatabaseRepository {
     val dbStateFlow: StateFlow<DBState>
     suspend fun getAll(): List<Movie>
     suspend fun getMovie(id: String): Movie?
@@ -19,4 +15,8 @@ interface DatabaseRepository {
         lon2: Double,
         numberOfResults: Int
     ): List<Movie>
+}
+
+enum class DBState {
+    Unknown, Updating, Ready
 }

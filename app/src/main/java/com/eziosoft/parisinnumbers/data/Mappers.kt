@@ -1,6 +1,6 @@
 package com.eziosoft.parisinnumbers.data
 
-import com.eziosoft.parisinnumbers.data.local.room.movies.RoomMovie
+import com.eziosoft.parisinnumbers.data.local.room.movies.LocalMovie
 import com.eziosoft.parisinnumbers.domain.Movie
 
 fun com.eziosoft.parisinnumbers.data.remote.openApi.models.allMovies.AllMoviesItem.toMovie() =
@@ -8,7 +8,7 @@ fun com.eziosoft.parisinnumbers.data.remote.openApi.models.allMovies.AllMoviesIt
         id = "",
         address = adresse_lieu ?: "",
         year = annee_tournage ?: "",
-        ardt_lieu = ardt_lieu ?: "",
+        district = ardt_lieu ?: "",
         lon = geo_point_2d.lon,
         lat = geo_point_2d.lat,
         startDate = date_debut ?: "",
@@ -20,11 +20,11 @@ fun com.eziosoft.parisinnumbers.data.remote.openApi.models.allMovies.AllMoviesIt
         type = type_tournage ?: ""
     )
 
-fun Movie.toRoomMovie() = RoomMovie(
+fun Movie.toRoomMovie() = LocalMovie(
     id = placeId,
     address = address,
     year = year,
-    ardt_lieu = ardt_lieu,
+    ardt_lieu = district,
     lon = lon,
     lat = lat,
     startDate = startDate,
@@ -37,11 +37,11 @@ fun Movie.toRoomMovie() = RoomMovie(
 
 )
 
-fun RoomMovie.toMovie() = Movie(
+fun LocalMovie.toMovie() = Movie(
     id = placeId,
     address = address,
     year = year,
-    ardt_lieu = ardt_lieu,
+    district = ardt_lieu,
     lon = lon,
     lat = lat,
     startDate = startDate,

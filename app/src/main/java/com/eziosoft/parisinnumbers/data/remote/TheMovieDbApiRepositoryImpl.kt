@@ -1,22 +1,21 @@
 package com.eziosoft.parisinnumbers.data.remote
 
 import android.util.Log
+import com.eziosoft.parisinnumbers.data.local.room.movieDetails.LocalMovieDetails
 import com.eziosoft.parisinnumbers.data.local.room.movieDetails.MovieDetailsDao
-import com.eziosoft.parisinnumbers.data.local.room.movieDetails.RoomMovieDetails
-import com.eziosoft.parisinnumbers.data.remote.theMovieDb.TheMovieDb
-import com.eziosoft.parisinnumbers.domain.repository.TheMovieDbRepository
+import com.eziosoft.parisinnumbers.data.remote.theMovieDbApi.TheMovieDbApi
+import com.eziosoft.parisinnumbers.domain.repository.TheMovieDbApiRepository
 
-class TheMovieDbRepositoryImpl(
-    private val api: TheMovieDb,
+class TheMovieDbApiRepositoryImpl(
+    private val api: TheMovieDbApi,
     private val apiKey: String,
     private val movieDetailsDao: MovieDetailsDao
-) : TheMovieDbRepository {
+) : TheMovieDbApiRepository {
 
-    override suspend fun search(query: String): RoomMovieDetails {
+    override suspend fun search(query: String): LocalMovieDetails {
         val queryProcessed = query.uppercase().trim()
 
         val listFromRoom = movieDetailsDao.get(queryProcessed)
-        Log.d("aaa", "search $queryProcessed: $listFromRoom")
         if (listFromRoom.isNotEmpty()) {
             return listFromRoom.first()
         } else {
@@ -24,13 +23,12 @@ class TheMovieDbRepositoryImpl(
             val response = api.search(apiKey, query)
 
             if (response.isSuccessful) {
-                Log.d("aaa", "search: response.isSuccessful")
                 val body = response.body()
                 val resultList = body?.results
                 if (!resultList.isNullOrEmpty()) {
                     resultList.forEach {
                         if (it.title?.uppercase() == query.uppercase()) {
-                            val movieFromApi = RoomMovieDetails(
+                            val movieFromApi = LocalMovieDetails(
                                 title = queryProcessed,
                                 posterUrl = it.poster_path ?: "",
                                 description = it.overview ?: ""
@@ -43,7 +41,7 @@ class TheMovieDbRepositoryImpl(
             }
         }
 
-        val m = RoomMovieDetails(
+        val m = LocalMovieDetails(
             title = queryProcessed,
             posterUrl = "",
             description = ""
@@ -52,20 +50,3 @@ class TheMovieDbRepositoryImpl(
         return m
     }
 }
-
-//    fun searchInfoAboutMovie(title: String, callback: (posterUrl: String) -> Unit) =
-//        viewModelScope.launch(projectDispatchers.ioDispatcher) {
-//            movieDbRepository.search(title).onSuccess { list ->
-//                list?.let { listOfMovies ->
-//                    if (listOfMovies.isNotEmpty()) {
-//                        listOfMovies.forEach { movie ->
-//                            if (movie.title?.uppercase() == title.uppercase() && movie.poster_path != null) {
-//                                callback(movie.poster_path)
-//                            }
-//                        }
-//                    }
-//                }
-//            }.onFailure {
-//                Log.d("aaa", "searchInfoAboutMovie: isFailure ${it.message}")
-//            }
-//        }

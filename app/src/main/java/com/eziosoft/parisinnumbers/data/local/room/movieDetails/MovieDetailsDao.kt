@@ -9,8 +9,8 @@ import androidx.room.Query
 interface MovieDetailsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(movieDetails: RoomMovieDetails)
+    fun insert(movieDetails: LocalMovieDetails)
 
     @Query("SELECT * FROM movieDetails WHERE title LIKE '%' || :title || '%'")
-    fun get(title: String): List<RoomMovieDetails>
+    fun get(title: String): List<LocalMovieDetails>
 }

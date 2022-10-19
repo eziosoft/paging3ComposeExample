@@ -6,11 +6,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.eziosoft.parisinnumbers.data.DefaultPaginator
 import com.eziosoft.parisinnumbers.data.remote.openApi.PAGE_SIZE
 import com.eziosoft.parisinnumbers.domain.Movie
+import com.eziosoft.parisinnumbers.domain.paginator.DefaultPaginator
 import com.eziosoft.parisinnumbers.domain.repository.DBState
-import com.eziosoft.parisinnumbers.domain.repository.DatabaseRepository
+import com.eziosoft.parisinnumbers.domain.repository.LocalDatabaseRepository
 import com.eziosoft.parisinnumbers.navigation.Action
 import com.eziosoft.parisinnumbers.navigation.ActionDispatcher
 import com.eziosoft.parisinnumbers.presentation.ProjectDispatchers
@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class ListScreenViewModel(
-    private val dbRepository: DatabaseRepository,
+    private val dbRepository: LocalDatabaseRepository,
     private val actionDispatcher: ActionDispatcher,
     private val projectDispatchers: ProjectDispatchers
 ) : ViewModel() {

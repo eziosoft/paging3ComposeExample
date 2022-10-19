@@ -5,19 +5,19 @@ import com.eziosoft.parisinnumbers.data.toMovie
 import com.eziosoft.parisinnumbers.data.toRoomMovie
 import com.eziosoft.parisinnumbers.domain.Movie
 import com.eziosoft.parisinnumbers.domain.repository.DBState
-import com.eziosoft.parisinnumbers.domain.repository.DatabaseRepository
+import com.eziosoft.parisinnumbers.domain.repository.LocalDatabaseRepository
 import com.eziosoft.parisinnumbers.domain.repository.OpenApiRepository
-import com.eziosoft.parisinnumbers.domain.repository.TheMovieDbRepository
+import com.eziosoft.parisinnumbers.domain.repository.TheMovieDbApiRepository
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class DbRepositoryImpl(
+class LocalDbRepositoryImplLocal(
     private val movieDao: MovieDao,
     private val openApiRepository: OpenApiRepository,
-    private val theMovieDbRepository: TheMovieDbRepository
-) : DatabaseRepository {
+    private val theMovieDbApiRepository: TheMovieDbApiRepository
+) : LocalDatabaseRepository {
 
     private val _dbStateFlow = MutableStateFlow(DBState.Unknown)
     override val dbStateFlow: StateFlow<DBState> = _dbStateFlow.asStateFlow()
@@ -48,7 +48,7 @@ class DbRepositoryImpl(
 
     override suspend fun getMovie(id: String): Movie? =
         movieDao.getMovie(id).map {
-            val movieDetails = theMovieDbRepository.search(it.title)
+            val movieDetails = theMovieDbApiRepository.search(it.title)
             if (movieDetails != null) {
                 it.toMovie().copy(
                     posterUrl = movieDetails.posterUrl,
@@ -65,7 +65,7 @@ class DbRepositoryImpl(
         searchString: String
     ): List<Movie> =
         movieDao.getPaged(rowNumber, pageSize, searchString).parallelMap {
-            val movieDetails = theMovieDbRepository.search(it.title)
+            val movieDetails = theMovieDbApiRepository.search(it.title)
             if (movieDetails != null) {
                 it.toMovie().copy(
                     posterUrl = movieDetails.posterUrl,

@@ -9,6 +9,8 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -67,11 +69,41 @@ fun NavigationComponent(
         },
         sheetPeekHeight = 0.dp
     ) { scaffoldPaddings1 ->
+        var showMenu by remember { mutableStateOf(false) }
 
         Scaffold(
-            modifier = Modifier.padding(scaffoldPaddings1),
+            modifier = Modifier
+                .padding(scaffoldPaddings1),
+            topBar = {
+                TopAppBar(title = {
+                    Text(
+                        modifier = Modifier,
+                        text = "Movies in Paris"
+                    )
+                },
+                    actions = {
+                        IconButton(onClick = { showMenu = !showMenu }) {
+                            Icon(Icons.Default.MoreVert, contentDescription = "more")
+                        }
+                        DropdownMenu(
+                            expanded = showMenu,
+                            onDismissRequest = { showMenu = false }
+                        ) {
+                            DropdownMenuItem(
+                                modifier = Modifier
+                                    .background(PrimaryLight),
+                                onClick = {
+                                    showMenu = false
+                                }) {
+                                Text("Refresh database")
+                                Icon(Icons.Filled.Refresh, contentDescription = "Refresh database")
+                            }
+                        }
+                    })
+            },
             bottomBar = {
                 BottomNavigationBar(
+                    modifier = Modifier,
                     navController = navController,
                     itemsList = listOf(
                         BottomNavItem(
