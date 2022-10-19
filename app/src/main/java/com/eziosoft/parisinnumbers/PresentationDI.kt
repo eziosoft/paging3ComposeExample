@@ -21,6 +21,6 @@ val presentationModule = module {
     }
 
     viewModel {
-        MovieDetailsBottomSheetViewModel(get(), get(), get(), get())
+        MovieDetailsBottomSheetViewModel(get(), get(), get())
     }
 }
