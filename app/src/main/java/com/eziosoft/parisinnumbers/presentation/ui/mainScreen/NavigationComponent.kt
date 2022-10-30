@@ -75,12 +75,13 @@ fun NavigationComponent(
             modifier = Modifier
                 .padding(scaffoldPaddings1),
             topBar = {
-                TopAppBar(title = {
-                    Text(
-                        modifier = Modifier,
-                        text = "Movies in Paris"
-                    )
-                },
+                TopAppBar(
+                    title = {
+                        Text(
+                            modifier = Modifier,
+                            text = "Movies in Paris"
+                        )
+                    },
                     actions = {
                         IconButton(onClick = { showMenu = !showMenu }) {
                             Icon(Icons.Default.MoreVert, contentDescription = "more")
@@ -94,12 +95,14 @@ fun NavigationComponent(
                                     .background(PrimaryLight),
                                 onClick = {
                                     showMenu = false
-                                }) {
+                                }
+                            ) {
                                 Text("Refresh database")
                                 Icon(Icons.Filled.Refresh, contentDescription = "Refresh database")
                             }
                         }
-                    })
+                    }
+                )
             },
             bottomBar = {
                 BottomNavigationBar(

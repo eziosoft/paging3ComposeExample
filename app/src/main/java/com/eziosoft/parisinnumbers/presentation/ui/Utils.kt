@@ -12,8 +12,8 @@ import androidx.compose.ui.graphics.graphicsLayer
 fun Modifier.rotating(duration: Int, right: Boolean = true): Modifier = composed {
     val transition = rememberInfiniteTransition()
     val angleRatio by transition.animateFloat(
-        initialValue = if(right) 0f else 1f,
-        targetValue = if(right) 1f else 0f,
+        initialValue = if (right) 0f else 1f,
+        targetValue = if (right) 1f else 0f,
         animationSpec = infiniteRepeatable(
             animation = tween(durationMillis = duration)
         )

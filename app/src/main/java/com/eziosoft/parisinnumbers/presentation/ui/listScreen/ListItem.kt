@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.eziosoft.parisinnumbers.R
@@ -73,4 +74,24 @@ fun ListItem(
             )
         }
     }
+}
+
+@Preview
+@Composable
+fun preview() {
+    ListItem(
+        movie = Movie(
+            id = "asda",
+            address = "asdasasdd",
+            year = "1234",
+            district = "75000",
+            startDate = "start date",
+            endDate = "end date",
+            producer = "producer",
+            realisation = "realisation",
+            title = "title",
+            description = "this is the description"
+        ),
+        onClick = {}
+    )
 }
